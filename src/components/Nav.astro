@@ -69,6 +69,7 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
     background: color-mix(in srgb, var(--plaster) 94%, transparent);
     border-bottom: 1.5px solid var(--hair-ink);
     opacity: 0;
+    pointer-events: none;
     transition: opacity 0.3s var(--ease-out);
   }
   .nav.is-solid::before { opacity: 1; }
