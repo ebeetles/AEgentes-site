@@ -1,0 +1,370 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import FlapBoard from '../components/FlapBoard.astro';
+import WorkCard from '../components/WorkCard.astro';
+import Receipt from '../components/Receipt.astro';
+
+const work = (await getCollection('work'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .filter((w) => w.data.featured)
+  .slice(0, 3);
+
+const trades = [
+  'bakers', 'barbers', 'florists', 'builders', 'dentists', 'roofers',
+  'brewers', 'tailors', 'grocers', 'welders', 'framers', 'movers',
+];
+
+const steps = [
+  {
+    n: 'I', name: 'The chat', when: 'Week 1',
+    copy: 'Thirty minutes, no jargon, no slide deck. We learn how your shop actually runs, what you sell most, and what a good month looks like.',
+  },
+  {
+    n: 'II', name: 'The blueprint', when: 'Week 1',
+    copy: 'One page that pins the whole plan down — sitemap, words, look, price. You approve it before we build a thing.',
+  },
+  {
+    n: 'III', name: 'The build', when: 'Weeks 2–3',
+    copy: 'Design and code, growing at a link you can open on your phone whenever you like. Two proper rounds of changes included.',
+  },
+  {
+    n: 'IV', name: 'The keys', when: 'Week 4',
+    copy: 'We launch, point your domain, sort your email, and teach you to run it all in an hour. Then it’s yours — files, accounts, everything.',
+  },
+];
+---
+
+<Base
+  title="Ægentes — websites for small businesses"
+  description="Ægentes is a web studio that designs and builds websites for shops, trades and independents — proper, fast, and unmistakably yours."
+  theme="pine"
+>
+  <!-- ============ hero ============ -->
+  <section class="hero on-pine">
+    <div class="wrap hero-grid">
+      <div class="hero-in">
+        <p class="plaque plaque--brass" data-reveal>Ægentes · Web studio · Est. 2026</p>
+
+        <h1 class="display lines hero-h1">
+          <span class="l"><span class="li" style="--d: 90ms">We put small business</span></span>
+          <span class="l"><span class="li" style="--d: 200ms">up <em>in lights.</em></span></span>
+        </h1>
+
+        <div class="hero-flap" data-reveal style="--d: 380ms">
+          <FlapBoard label="Now serving" words={trades} />
+        </div>
+
+        <p class="lede hero-lede" data-reveal style="--d: 500ms">
+          We design and build websites for shops, trades and independents — with the same
+          care you put into your own work. Proper, fast, and unmistakably yours.
+        </p>
+
+        <div class="hero-ctas" data-reveal style="--d: 600ms">
+          <a class="btn btn--plaster" href="/contact/">Start a project <span class="arrow">→</span></a>
+          <a class="btn btn--ghost-pine" href="/work/">See the work</a>
+        </div>
+      </div>
+
+      <aside class="hero-glass" data-reveal style="--d: 700ms" aria-hidden="true">
+        <p class="glass-line">— Design &amp; build —</p>
+        <p class="glass-line glass-sub">words · photos · care</p>
+        <div class="glass-seal">
+          <svg viewBox="0 0 200 200">
+            <circle cx="100" cy="100" r="96" fill="none" stroke="currentColor" stroke-width="2"/>
+            <circle cx="100" cy="100" r="84" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 6"/>
+            <text x="100" y="104" text-anchor="middle" dominant-baseline="central" font-size="94">Æ</text>
+          </svg>
+        </div>
+        <p class="glass-line glass-sub">est. mmxxvi</p>
+        <p class="glass-line">Open Mon–Fri · by appointment</p>
+      </aside>
+    </div>
+
+    <div class="wrap hero-foot" data-reveal style="--d: 750ms">
+      <p class="hero-latin"><em>Ægentes</em> — from the Latin <em>agentes</em>: the ones who do.</p>
+      <p class="tag hero-open"><span class="livedot" aria-hidden="true"></span>Open — booking new projects</p>
+    </div>
+  </section>
+
+  <!-- ============ recent work ============ -->
+  <section class="band work-band">
+    <div class="wrap">
+      <header class="sect-head sect-head--split">
+        <div>
+          <p class="plaque plaque--brass" data-reveal>The work</p>
+          <h2 class="display" data-reveal style="--d: 100ms">Recent shopfronts.</h2>
+        </div>
+        <a class="tag head-link" href="/work/" data-reveal style="--d: 200ms">All work <span class="arrow">→</span></a>
+      </header>
+
+      <div class="work-grid">
+        {work.map((entry, i) => (
+          <div data-reveal style={`--d: ${i * 120}ms`}>
+            <WorkCard entry={entry} headingLevel="h3" />
+          </div>
+        ))}
+        <a class="vacant" href="/contact/" data-reveal style="--d: 360ms">
+          <span class="tag vacant-tag">Vacant · apply within</span>
+          <span class="display vacant-line">Your name here.</span>
+          <span class="tag vacant-cta">Start a project <span class="arrow">→</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ the receipt ============ -->
+  <section class="band ticket-band">
+    <div class="wrap ticket-grid">
+      <div class="ticket-copy">
+        <p class="plaque plaque--brass" data-reveal>What you get</p>
+        <h2 class="display" data-reveal style="--d: 100ms">Everything on <em>the ticket.</em></h2>
+        <p class="lede" data-reveal style="--d: 200ms">
+          One flat scope, agreed up front, itemised like it matters. No mystery line
+          items, no "that'll be extra" three weeks in. If it's on the receipt, it ships.
+        </p>
+        <p class="ticket-note" data-reveal style="--d: 300ms">
+          Most projects run four weeks, door to door. If yours needs more — bookings,
+          ordering, a shop — we'll say so on day one, with a number attached.
+        </p>
+      </div>
+      <div class="ticket-paper" data-reveal style="--d: 250ms">
+        <Receipt />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ process ============ -->
+  <section class="band on-pine process-band">
+    <div class="wrap">
+      <header class="sect-head">
+        <p class="plaque plaque--brass" data-reveal>How it goes</p>
+        <h2 class="display" data-reveal style="--d: 100ms">Four weeks, <em>four steps.</em></h2>
+      </header>
+
+      <ol class="steps">
+        {steps.map((s, i) => (
+          <li class="step" data-reveal style={`--d: ${i * 90}ms`}>
+            <span class="step-n mono" aria-hidden="true">{s.n}</span>
+            <div class="step-body">
+              <h3 class="display step-name">{s.name}</h3>
+              <p class="step-copy">{s.copy}</p>
+            </div>
+            <span class="tag step-when">{s.when}</span>
+          </li>
+        ))}
+      </ol>
+
+      <p class="steps-after" data-reveal>
+        And then we stick around — small tweaks, seasonal updates, and a real
+        person on the other end of <a href="mailto:hello@aegentes.com">hello@aegentes.com</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ who it's for ============ -->
+  <section class="band fit-band">
+    <div class="wrap">
+      <p class="plaque plaque--brass" data-reveal>Who it's for</p>
+      <h2 class="display fit-line lines">
+        <span class="l"><span class="li">Made for the corner shop,</span></span>
+        <span class="l"><span class="li" style="--d: 110ms">the two-truck crew,</span></span>
+        <span class="l"><span class="li" style="--d: 220ms"><em>the chair by appointment.</em></span></span>
+      </h2>
+      <div class="fit-cols">
+        <p class="fit-copy" data-reveal>
+          We don't chase brands with brand teams. We work with people whose name is
+          over the door — where the website isn't a marketing asset, it's the front
+          of the shop. That's a responsibility we take personally.
+        </p>
+        <a class="btn btn--ghost-ink fit-btn" data-reveal style="--d: 120ms" href="/studio/">Meet the studio <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---- hero ---- */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100svh;
+    padding-top: clamp(6rem, 12vh, 8.5rem);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(2rem, 5vw, 6rem);
+    align-items: center;
+  }
+  .hero-in { display: grid; gap: 1.55rem; justify-items: start; }
+  .hero-h1 { max-width: 11em; }
+  .hero-h1 em { color: var(--brass-2); }
+  .hero-flap { margin-block: 0.35rem; }
+  .hero-lede { opacity: 0.92; }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 0.3rem; }
+
+  /* gold lettering on the window glass */
+  .hero-glass {
+    display: grid;
+    justify-items: center;
+    gap: 1.1rem;
+    color: var(--brass-2);
+    opacity: 0.85;
+    padding-right: clamp(0rem, 2vw, 2.5rem);
+  }
+  .glass-line {
+    font-family: var(--f-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .glass-sub { opacity: 0.75; letter-spacing: 0.22em; }
+  .glass-seal { width: clamp(9rem, 14vw, 13rem); }
+  .glass-seal svg { width: 100%; height: auto; }
+  .glass-seal text {
+    font-family: var(--f-display);
+    font-style: italic;
+    font-weight: 560;
+    fill: currentColor;
+  }
+  .glass-seal circle { opacity: 0.8; }
+  @media (max-width: 1080px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .hero-glass { display: none; }
+  }
+
+  .hero-foot {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem 2.5rem;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1.5px solid var(--hair-brass);
+    padding-block: 1.15rem 1.3rem;
+    margin-top: 3.5rem;
+  }
+  .hero-latin { font-size: 0.92rem; opacity: 0.8; }
+  .hero-latin em { font-family: var(--f-display); }
+  .hero-open { color: var(--brass-2); display: inline-flex; align-items: center; gap: 0.6em; }
+
+  /* ---- shared section header split ---- */
+  .sect-head--split {
+    grid-template-columns: 1fr auto;
+    align-items: end;
+  }
+  .sect-head--split > div { display: grid; gap: 1.4rem; }
+  .head-link {
+    text-decoration: none;
+    border-bottom: 2px solid var(--brass);
+    padding-bottom: 0.45em;
+  }
+  .head-link .arrow { display: inline-block; transition: transform 0.25s var(--ease-out); }
+  .head-link:hover .arrow { transform: translateX(4px); }
+
+  /* ---- work grid ---- */
+  .work-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.5rem, 3.2vw, 3rem);
+  }
+  .work-grid > :nth-child(even) { margin-top: clamp(0rem, 5vw, 4.5rem); }
+  .work-grid > :nth-child(odd):not(:first-child) { margin-top: clamp(0rem, -2vw, -1.5rem); }
+
+  .vacant {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.1rem;
+    text-align: center;
+    min-height: 24rem;
+    border: 2.5px dashed color-mix(in srgb, var(--ink) 45%, transparent);
+    border-radius: var(--frame-r);
+    text-decoration: none;
+    padding: 2rem;
+    transition: background-color 0.3s var(--ease-out), border-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
+  }
+  .vacant-tag { color: var(--brass); }
+  .vacant-line { font-size: var(--t-h3); }
+  .vacant-cta { border-bottom: 2px solid var(--brass); padding-bottom: 0.4em; }
+  .vacant:hover { background: var(--pine); border-color: var(--pine); color: var(--plaster); }
+  .vacant:hover .vacant-tag { color: var(--brass-2); }
+  .vacant .arrow { display: inline-block; transition: transform 0.25s var(--ease-out); }
+  .vacant:hover .arrow { transform: translateX(4px); }
+
+  /* ---- receipt band ---- */
+  .ticket-band { background: color-mix(in srgb, var(--brass) 10%, var(--plaster)); }
+  .ticket-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: center;
+  }
+  .ticket-copy { display: grid; gap: 1.5rem; justify-items: start; }
+  .ticket-note { max-width: 36em; opacity: 0.85; }
+  .ticket-paper { justify-self: center; }
+
+  /* ---- process ---- */
+  .steps {
+    list-style: none;
+    padding: 0;
+    display: grid;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr auto;
+    gap: 1.2rem 2rem;
+    align-items: start;
+    padding-block: 2rem;
+    border-top: 1.5px solid var(--hair-brass);
+  }
+  .step:last-child { border-bottom: 1.5px solid var(--hair-brass); }
+  .step-n {
+    font-size: 1.5rem;
+    color: var(--brass-2);
+    line-height: 1.3;
+  }
+  .step-body { display: grid; gap: 0.6rem; max-width: 44em; }
+  .step-name { margin: 0; }
+  .step-copy { opacity: 0.88; max-width: 38em; }
+  .step-when { color: var(--brass-2); padding-top: 0.55em; }
+  .steps-after {
+    margin-top: 2.6rem;
+    max-width: 38em;
+    opacity: 0.9;
+  }
+  .steps-after a { text-decoration-color: var(--brass-2); }
+  .steps-after a:hover { color: var(--brass-2); }
+
+  /* ---- fit ---- */
+  .fit-band .plaque { margin-bottom: 2rem; }
+  .fit-line { max-width: 12em; }
+  .fit-line em { color: var(--brass); }
+  .fit-cols {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 4rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 2.6rem;
+  }
+  .fit-copy { max-width: 38em; font-size: var(--t-lede); line-height: 1.55; }
+
+  /* ---- responsive ---- */
+  @media (max-width: 900px) {
+    .ticket-grid { grid-template-columns: 1fr; }
+    .ticket-paper { justify-self: start; }
+  }
+  @media (max-width: 760px) {
+    .work-grid { grid-template-columns: 1fr; }
+    .work-grid > :nth-child(even),
+    .work-grid > :nth-child(odd):not(:first-child) { margin-top: 0; }
+    .vacant { min-height: 17rem; }
+    .step { grid-template-columns: 3rem 1fr; }
+    .step-when { grid-column: 2; order: 3; padding-top: 0; }
+    .sect-head--split { grid-template-columns: 1fr; align-items: start; }
+  }
+</style>

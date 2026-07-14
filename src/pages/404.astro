@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import FlapBoard from '../components/FlapBoard.astro';
+---
+
+<Base
+  title="Page not found — Ægentes"
+  description="Nothing in this window. The page you're after has moved on or never opened."
+  theme="pine"
+>
+  <section class="lost on-pine">
+    <div class="wrap lost-in">
+      <p class="plaque plaque--brass" data-reveal>Error 404</p>
+      <div data-reveal style="--d: 120ms">
+        <FlapBoard label="This window is" words={['EMPTY', 'CLOSED', 'MOVED', 'GONE']} interval={2200} />
+      </div>
+      <h1 class="display lost-line" data-reveal style="--d: 260ms">
+        Nothing in <em>this window.</em>
+      </h1>
+      <p class="lede" data-reveal style="--d: 360ms">
+        The page you're after has moved on, changed its name, or never opened.
+        Try the front door — everything worth seeing is on the street.
+      </p>
+      <div class="lost-ctas" data-reveal style="--d: 460ms">
+        <a class="btn btn--plaster" href="/">Front door <span class="arrow">→</span></a>
+        <a class="btn btn--ghost-pine" href="/work/">See the work</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .lost {
+    min-height: 100svh;
+    display: grid;
+    align-items: center;
+    padding-block: clamp(8rem, 16vh, 11rem) var(--band);
+  }
+  .lost-in { display: grid; gap: 1.8rem; justify-items: start; }
+  .lost-line em { color: var(--brass-2); }
+  .lost-ctas { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+</style>

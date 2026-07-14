@@ -1,0 +1,195 @@
+---
+/**
+ * Generated cover art — a "sign" for each client, drawn at build time.
+ * Deterministic from the entry id, coloured by the project palette.
+ * If the entry has a real `cover` image, that is shown instead.
+ */
+interface Palette { bg: string; fg: string; accent: string }
+interface Props {
+  id: string;
+  client: string;
+  trade: string;
+  year: number;
+  palette: Palette;
+  motif: 'sunburst' | 'stripes' | 'arch' | 'checker' | 'rays' | 'monogram';
+  cover?: string | undefined;
+  fit?: 'contain' | 'cover';
+  class?: string;
+}
+
+const { id, client, trade, year, palette, motif, cover, fit = 'contain', class: cls = '' } = Astro.props;
+const { bg, fg, accent } = palette;
+
+/* deterministic PRNG seeded from the entry id */
+function hash(s: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+function mulberry32(a: number) {
+  return () => {
+    a |= 0; a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+const rnd = mulberry32(hash(id));
+const pick = <T,>(arr: T[]): T => arr[Math.floor(rnd() * arr.length)]!;
+const between = (a: number, b: number) => a + rnd() * (b - a);
+
+const esc = (s: string) =>
+  s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+const W = 800, H = 600;
+const initial = esc(client.replace(/^The /i, '').charAt(0).toUpperCase());
+const uid = `c${hash(id).toString(36)}`;
+
+const polar = (cx: number, cy: number, r: number, deg: number) => {
+  const rad = (deg * Math.PI) / 180;
+  return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)] as const;
+};
+const wedge = (cx: number, cy: number, r: number, a0: number, a1: number) => {
+  const [x0, y0] = polar(cx, cy, r, a0);
+  const [x1, y1] = polar(cx, cy, r, a1);
+  return `M${cx},${cy} L${x0.toFixed(1)},${y0.toFixed(1)} A${r} ${r} 0 0 1 ${x1.toFixed(1)},${y1.toFixed(1)} Z`;
+};
+
+let art = '';
+
+if (motif === 'sunburst') {
+  const cy = 396, cx = W / 2, sunR = between(104, 126);
+  const n = pick([12, 14, 16]);
+  const step = 180 / n;
+  let rays = '';
+  for (let i = 0; i < n; i++) {
+    const a0 = 180 + i * step;
+    rays += `<path d="${wedge(cx, cy, 760, a0, a0 + step * 0.58)}" fill="${fg}" opacity="${i % 2 ? 0.14 : 0.3}"/>`;
+  }
+  const marks = [-70, 0, 70]
+    .map((dx) => `<path d="M${cx + dx - 9},${cy + 64} l9,-9 9,9 -9,9 Z" fill="${accent}"/>`)
+    .join('');
+  art = `
+    <clipPath id="${uid}-sky"><rect x="0" y="0" width="${W}" height="${cy}"/></clipPath>
+    <g clip-path="url(#${uid}-sky)">${rays}</g>
+    <path d="M${cx - sunR},${cy} A${sunR} ${sunR} 0 0 1 ${cx + sunR},${cy} Z" fill="${accent}"/>
+    <circle cx="${cx}" cy="${cy - sunR * 0.42}" r="${sunR * 0.3}" fill="${bg}" opacity="0.28"/>
+    <line x1="56" y1="${cy}" x2="${W - 56}" y2="${cy}" stroke="${fg}" stroke-width="4"/>
+    <line x1="56" y1="${cy + 14}" x2="${W - 56}" y2="${cy + 14}" stroke="${fg}" stroke-width="1.5" opacity="0.5"/>
+    ${marks}
+    <text x="${cx}" y="${cy + 132}" text-anchor="middle" fill="${fg}" font-family="var(--f-mono)" font-size="21" letter-spacing="9">${esc(client.toUpperCase())}</text>`;
+} else if (motif === 'stripes') {
+  const bandH = 322;
+  const n = pick([8, 10]);
+  const w = W / n;
+  let stripes = '';
+  let scallops = '';
+  for (let i = 0; i < n; i++) {
+    const col = i % 2 ? bg : fg;
+    stripes += `<rect x="${i * w}" y="0" width="${w + 0.5}" height="${bandH}" fill="${col}"/>`;
+    scallops += `<path d="M${i * w},${bandH} a${w / 2} ${w / 2} 0 0 0 ${w},0 Z" fill="${col}"/>`;
+  }
+  const signW = 292, signH = 128, sx = (W - signW) / 2, sy = 402;
+  art = `
+    ${stripes}${scallops}
+    <rect x="${sx}" y="${sy}" width="${signW}" height="${signH}" rx="12" fill="${accent}"/>
+    <rect x="${sx + 9}" y="${sy + 9}" width="${signW - 18}" height="${signH - 18}" rx="7" fill="none" stroke="${bg}" stroke-width="2.5"/>
+    <text x="${W / 2}" y="${sy + signH / 2}" text-anchor="middle" dominant-baseline="central" fill="${bg}" font-family="var(--f-display)" font-weight="700" font-size="76">${initial}</text>
+    <line x1="${sx + 40}" y1="${sy + signH + 26}" x2="${sx + signW - 40}" y2="${sy + signH + 26}" stroke="${fg}" stroke-width="2" opacity="0.6"/>`;
+} else if (motif === 'arch') {
+  const aw = between(280, 310), r = aw / 2;
+  const x0 = W / 2 - r, x1 = W / 2 + r;
+  const baseY = 512, topY = 268;
+  const archPath = (inset: number) => {
+    const rr = r - inset;
+    return `M${x0 + inset},${baseY} L${x0 + inset},${topY + inset} A${rr} ${rr} 0 0 1 ${x1 - inset},${topY + inset} L${x1 - inset},${baseY} Z`;
+  };
+  const flankH = between(120, 160);
+  art = `
+    <path d="${archPath(0)}" fill="${fg}"/>
+    <path d="${archPath(24)}" fill="${bg}"/>
+    <path d="${archPath(46)}" fill="${accent}"/>
+    <text x="${W / 2}" y="${baseY - 84}" text-anchor="middle" fill="${bg}" font-family="var(--f-display)" font-style="italic" font-weight="560" font-size="150">${initial}</text>
+    <path d="M96,${baseY} L96,${baseY - flankH} A54 54 0 0 1 204,${baseY - flankH} L204,${baseY}" fill="none" stroke="${fg}" stroke-width="4"/>
+    <path d="M596,${baseY} L596,${baseY - flankH} A54 54 0 0 1 704,${baseY - flankH} L704,${baseY}" fill="none" stroke="${fg}" stroke-width="4"/>
+    <line x1="56" y1="${baseY}" x2="${W - 56}" y2="${baseY}" stroke="${fg}" stroke-width="4"/>
+    <circle cx="${W / 2}" cy="150" r="7" fill="${fg}"/>`;
+} else if (motif === 'checker') {
+  const t = 40, bandTiles = 2;
+  let tiles = '';
+  const cols = W / t, rows = H / t;
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      const inBand = i < bandTiles || j < bandTiles || i >= cols - bandTiles || j >= rows - bandTiles;
+      if (inBand && (i + j) % 2 === 0) tiles += `<rect x="${i * t}" y="${j * t}" width="${t}" height="${t}" fill="${fg}"/>`;
+    }
+  }
+  const px = bandTiles * t + 26, py = bandTiles * t + 26;
+  const pw = W - 2 * px, ph = H - 2 * py;
+  let rules = '';
+  for (let y = py + 70; y < py + ph - 24; y += 34) {
+    rules += `<line x1="${px + 30}" y1="${y}" x2="${px + pw - 30}" y2="${y}" stroke="${fg}" stroke-width="1.4" opacity="0.3"/>`;
+  }
+  art = `
+    ${tiles}
+    <rect x="${px}" y="${py}" width="${pw}" height="${ph}" fill="none" stroke="${accent}" stroke-width="2.5"/>
+    ${rules}
+    <circle cx="${W / 2}" cy="${H / 2}" r="84" fill="${bg}" stroke="${fg}" stroke-width="3"/>
+    <circle cx="${W / 2}" cy="${H / 2}" r="72" fill="none" stroke="${accent}" stroke-width="1.5" stroke-dasharray="2 7"/>
+    <text x="${W / 2}" y="${H / 2 + 2}" text-anchor="middle" dominant-baseline="central" fill="${fg}" font-family="var(--f-display)" font-weight="640" font-size="88">${initial}</text>`;
+} else if (motif === 'rays') {
+  const n = pick([12, 14]);
+  let rays = '';
+  for (let i = 0; i < n; i++) {
+    const a0 = -90 + (i * 90) / n;
+    const a1 = -90 + ((i + 0.62) * 90) / n;
+    rays += `<path d="${wedge(0, H, 1250, a0, a1)}" fill="${i % 3 === 2 ? accent : fg}" opacity="${i % 3 === 2 ? 0.85 : 0.16}"/>`;
+  }
+  const bx = 552, by = 216;
+  art = `
+    <g>${rays}</g>
+    <circle cx="${bx}" cy="${by}" r="112" fill="${bg}" stroke="${fg}" stroke-width="4"/>
+    <circle cx="${bx}" cy="${by}" r="97" fill="none" stroke="${accent}" stroke-width="2"/>
+    <text x="${bx}" y="${by + 4}" text-anchor="middle" dominant-baseline="central" fill="${fg}" font-family="var(--f-display)" font-style="italic" font-weight="600" font-size="118">${initial}</text>`;
+} else {
+  /* monogram roundel */
+  const cx = W / 2, cy = H / 2;
+  const ringText = esc(`${client} · ${trade} · est. ${year} · `.toUpperCase());
+  const d1 = pick([16, 20, 24]);
+  art = `
+    <defs>
+      <path id="${uid}-ring" d="M ${cx} ${cy - 148} a148 148 0 1 1 -0.01 0 Z"/>
+    </defs>
+    <circle cx="${cx}" cy="${cy}" r="196" fill="none" stroke="${fg}" stroke-width="3"/>
+    <circle cx="${cx}" cy="${cy}" r="178" fill="none" stroke="${accent}" stroke-width="1.6" stroke-dasharray="2 ${d1 / 2}"/>
+    <text font-family="var(--f-mono)" font-size="19" letter-spacing="4.5" fill="${fg}">
+      <textPath href="#${uid}-ring">${ringText}${ringText}</textPath>
+    </text>
+    <circle cx="${cx}" cy="${cy}" r="112" fill="${fg}"/>
+    <text x="${cx}" y="${cy + 3}" text-anchor="middle" dominant-baseline="central" fill="${bg}" font-family="var(--f-display)" font-style="italic" font-weight="580" font-size="128">${initial}</text>
+    ${[[70, 70], [W - 70, 70], [70, H - 70], [W - 70, H - 70]]
+      .map(([x, y]) => `<path d="M${x! - 10},${y} l10,-10 10,10 -10,10 Z" fill="${accent}"/>`)
+      .join('')}`;
+}
+
+const svg = `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid ${fit === 'cover' ? 'slice' : 'meet'}" role="img" aria-label="${esc(client)} — cover art">
+  <rect width="${W}" height="${H}" fill="${bg}"/>
+  <rect x="14" y="14" width="${W - 28}" height="${H - 28}" fill="none" stroke="${accent}" stroke-width="1.6" opacity="0.55"/>
+  ${art}
+</svg>`;
+---
+
+{cover ? (
+  <img class={`coverart ${cls}`} src={cover} alt={`${client} — website`} loading="lazy" decoding="async" />
+) : (
+  <div class={`coverart ${cls}`} set:html={svg} />
+)}
+
+<style>
+  .coverart { width: 100%; height: 100%; }
+  .coverart :global(svg) { width: 100%; height: 100%; display: block; }
+  img.coverart { object-fit: cover; }
+</style>

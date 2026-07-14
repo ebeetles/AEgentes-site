@@ -1,0 +1,190 @@
+---
+interface Props { theme?: 'pine' | 'plaster' }
+const { theme = 'plaster' } = Astro.props;
+
+const links = [
+  { href: '/work/', label: 'Work' },
+  { href: '/studio/', label: 'Studio' },
+  { href: '/contact/', label: 'Contact' },
+];
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+
+<header class="nav" data-nav data-theme={theme}>
+  <div class="nav-bar wrap">
+    <a class="wordmark" href="/" aria-label="Ægentes — home">
+      <span class="ae">Æ</span>gentes
+    </a>
+
+    <nav class="nav-links" aria-label="Primary">
+      {links.map((l) => (
+        <a class="nav-link tag" href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>
+          {l.label}
+        </a>
+      ))}
+      <a class="nav-cta tag" href="/contact/">Start a project</a>
+    </nav>
+
+    <button class="burger" data-menu-btn aria-expanded="false" aria-controls="shopmenu">
+      <span class="burger-box" aria-hidden="true"><i></i><i></i></span>
+      <span class="burger-label tag">Menu</span>
+    </button>
+  </div>
+
+  <div class="menu" id="shopmenu" data-menu hidden>
+    <div class="menu-inner wrap">
+      <p class="menu-kicker tag">Ægentes — web studio</p>
+      <nav class="menu-links" aria-label="Menu">
+        <a href="/">Home</a>
+        {links.map((l) => <a href={l.href}>{l.label}</a>)}
+      </nav>
+      <div class="menu-foot">
+        <a class="menu-mail" href="mailto:hello@aegentes.com">hello@aegentes.com</a>
+        <p class="tag menu-open"><span class="livedot" aria-hidden="true"></span> Open — taking on new projects</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 100;
+  }
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-block: 1.05rem;
+    transition: padding 0.3s var(--ease-out);
+  }
+  /* solid backdrop that fades in on scroll */
+  .nav::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, var(--plaster) 94%, transparent);
+    border-bottom: 1.5px solid var(--hair-ink);
+    opacity: 0;
+    transition: opacity 0.3s var(--ease-out);
+  }
+  .nav.is-solid::before { opacity: 1; }
+  .nav.is-solid .nav-bar { padding-block: 0.7rem; }
+
+  .wordmark {
+    position: relative;
+    font-family: var(--f-display);
+    font-weight: 680;
+    font-variation-settings: 'wght' 680;
+    font-size: 1.45rem;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+    line-height: 1;
+  }
+  .wordmark .ae { color: var(--brass); }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.2rem, 2.5vw, 2.2rem);
+  }
+  .nav-link {
+    position: relative;
+    text-decoration: none;
+    padding-block: 0.4em;
+  }
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 100%; bottom: 0;
+    border-top: 2px solid var(--brass);
+    transition: right 0.28s var(--ease-out);
+  }
+  .nav-link:hover::after, .nav-link[aria-current]::after { right: 0; }
+
+  .nav-cta {
+    text-decoration: none;
+    border: 1.5px solid currentColor;
+    border-radius: var(--plaque-r);
+    padding: 0.65em 1em 0.6em;
+    transition: background-color 0.22s var(--ease-out), color 0.22s var(--ease-out), border-color 0.22s var(--ease-out);
+  }
+
+  /* colour states: over pine vs over plaster vs scrolled-solid */
+  .nav[data-theme='pine']:not(.is-solid) .nav-bar { color: var(--plaster); }
+  .nav[data-theme='pine']:not(.is-solid) .wordmark .ae { color: var(--brass-2); }
+  .nav[data-theme='pine']:not(.is-solid) .nav-link::after { border-color: var(--brass-2); }
+  .nav[data-theme='pine']:not(.is-solid) .nav-cta:hover { background: var(--brass-2); border-color: var(--brass-2); color: var(--bottle); }
+  .nav[data-theme='plaster'] .nav-cta:hover, .nav.is-solid .nav-cta:hover { background: var(--ink); border-color: var(--ink); color: var(--plaster); }
+  .nav.is-solid .nav-bar { color: var(--ink); }
+  .nav.is-solid .wordmark .ae { color: var(--brass); }
+  .nav.is-solid .nav-link::after { border-color: var(--brass); }
+
+  /* burger */
+  .burger {
+    display: none;
+    align-items: center;
+    gap: 0.6em;
+    background: none;
+    border: 0;
+    padding: 0.5em 0;
+    cursor: pointer;
+  }
+  .burger-box { display: grid; gap: 5px; width: 26px; }
+  .burger-box i {
+    height: 2.5px;
+    background: currentColor;
+    border-radius: 2px;
+    transition: transform 0.3s var(--ease-out);
+  }
+  .nav.menu-open .burger-box i:first-child { transform: translateY(3.75px) rotate(45deg); }
+  .nav.menu-open .burger-box i:last-child { transform: translateY(-3.75px) rotate(-45deg); }
+
+  /* overlay menu */
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--pine);
+    color: var(--plaster);
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 0.5s var(--ease-out);
+    overflow-y: auto;
+  }
+  .nav.menu-open .menu { clip-path: inset(0); }
+  .menu-inner {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2.2rem;
+    padding-block: 6.5rem 3rem;
+  }
+  .menu-kicker { color: var(--brass-2); }
+  .menu-links { display: grid; gap: 0.35em; }
+  .menu-links a {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-variation-settings: 'wght' 600;
+    font-size: clamp(2.6rem, 10vw, 4rem);
+    line-height: 1.12;
+    text-decoration: none;
+    width: fit-content;
+  }
+  .menu-links a:hover { color: var(--brass-2); }
+  .menu-foot { display: grid; gap: 0.9rem; border-top: 1.5px solid var(--hair-brass); padding-top: 1.6rem; }
+  .menu-mail {
+    font-family: var(--f-mono);
+    font-size: 1.05rem;
+    text-decoration-color: var(--brass-2);
+  }
+  .menu-open .livedot { margin-right: 0.35em; }
+
+  @media (max-width: 820px) {
+    .nav-links { display: none; }
+    .burger { display: inline-flex; }
+  }
+</style>

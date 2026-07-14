@@ -1,0 +1,134 @@
+---
+/**
+ * Split-flap display — the mechanical shop sign.
+ * Server-renders the first word; src/scripts/main.ts runs the mechanism.
+ */
+interface Props {
+  words: string[];
+  label?: string;
+  interval?: number;
+}
+const { words, label = 'Now serving', interval = 3400 } = Astro.props;
+
+const upper = words.map((w) => w.toUpperCase());
+const cols = Math.max(...upper.map((w) => w.length));
+const first = upper[0].padEnd(cols, ' ');
+---
+
+<div
+  class="board"
+  data-flap
+  data-words={JSON.stringify(upper)}
+  data-interval={interval}
+  role="text"
+  aria-label={`${label}: ${words.join(', ')}`}
+>
+  <span class="board-label tag"><span class="livedot" aria-hidden="true"></span>{label}</span>
+  <span class="cells" aria-hidden="true">
+    {first.split('').map((ch) => (
+      <span class="cell" data-ch={ch}>
+        <span class="half top"><i>{ch}</i></span>
+        <span class="half bottom"><i>{ch}</i></span>
+        <span class="flappiece fold"><i>{ch}</i></span>
+        <span class="flappiece rise"><i>{ch}</i></span>
+      </span>
+    ))}
+  </span>
+</div>
+
+<style>
+  .board {
+    display: grid;
+    gap: 0.9rem;
+    justify-items: start;
+  }
+  .board-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7em;
+    color: var(--brass-2);
+  }
+  .cells {
+    display: flex;
+    gap: clamp(4px, 0.55vw, 7px);
+    font-family: var(--f-mono);
+    font-weight: 640;
+    font-variation-settings: 'wght' 640;
+    font-size: clamp(1.6rem, 0.5rem + 4.4vw, 3.4rem);
+    line-height: 1;
+    color: var(--plaster);
+  }
+
+  .cell {
+    position: relative;
+    width: 1.3ch;
+    height: 1.44em;
+    border-radius: max(4px, 0.09em);
+    background: linear-gradient(180deg, #12291f 0%, #0a1c14 48%, #08170f 52%, #0f231a 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(240, 240, 220, 0.09),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.5),
+      0 2px 3px rgba(0, 0, 0, 0.35);
+  }
+  /* the hinge line */
+  .cell::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 50%;
+    height: 1.5px;
+    margin-top: -0.75px;
+    background: rgba(0, 0, 0, 0.62);
+    z-index: 6;
+    pointer-events: none;
+  }
+
+  .half, .flappiece {
+    position: absolute;
+    left: 0; right: 0;
+    overflow: hidden;
+  }
+  .half.top { top: 0; height: 50%; border-radius: max(4px, 0.09em) max(4px, 0.09em) 0 0; }
+  .half.bottom { bottom: 0; height: 50%; border-radius: 0 0 max(4px, 0.09em) max(4px, 0.09em); }
+
+  .half i, .flappiece i {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    display: grid;
+    place-items: center;
+    font-style: normal;
+  }
+  .half.top i { top: 0; }
+  .half.bottom i { top: -100%; }
+
+  /* the two moving pieces of the shutter (2D transforms only) */
+  .fold {
+    top: 0;
+    height: 50%;
+    z-index: 5;
+    transform-origin: center bottom;
+    border-radius: max(4px, 0.09em) max(4px, 0.09em) 0 0;
+    background: linear-gradient(180deg, #142c22 0%, #0b1e16 100%);
+  }
+  .fold i { top: 0; }
+  .rise {
+    bottom: 0;
+    height: 50%;
+    z-index: 4;
+    transform: scaleY(0);
+    transform-origin: center top;
+    border-radius: 0 0 max(4px, 0.09em) max(4px, 0.09em);
+    background: linear-gradient(180deg, #08170f 0%, #10241b 100%);
+  }
+  .rise i { top: -100%; }
+
+  /* subtle sheen on the top halves, like brushed metal flaps */
+  .half.top::after, .fold::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(240, 240, 220, 0.07), transparent 65%);
+    pointer-events: none;
+  }
+</style>

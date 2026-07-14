@@ -1,0 +1,171 @@
+---
+import Base from '../layouts/Base.astro';
+
+const rules = [
+  { rule: 'If your customers can’t use it, it isn’t done.', note: 'We test on cracked phones and slow connections, not just studio monitors.' },
+  { rule: 'Fast beats clever.', note: 'A site that loads in a blink sells more than one that wins design prizes and takes six seconds.' },
+  { rule: 'You own everything.', note: 'Domain, files, accounts, photos — in your name from day one. No hostages.' },
+  { rule: 'Plain English, plain invoices.', note: 'If we can’t explain it across a counter, we don’t say it. One number, agreed up front.' },
+  { rule: 'We only take work we can make excellent.', note: 'A short client list is the point. You get the whole bench, not a corner of it.' },
+  { rule: 'Launch is the start, not the finish.', note: 'Shops change — menus, prices, seasons. Your site should keep up without a support ticket.' },
+];
+---
+
+<Base
+  title="Studio — Ægentes"
+  description="Ægentes — from the Latin agentes, the ones who do. A small web studio for small businesses: house rules, working style, and why the name."
+>
+  <section class="band studio-head">
+    <div class="wrap">
+      <p class="plaque plaque--brass" data-reveal>The studio</p>
+      <h1 class="display lines head-line">
+        <span class="l"><span class="li">A small shop</span></span>
+        <span class="l"><span class="li" style="--d: 110ms">for <em>small shops.</em></span></span>
+      </h1>
+      <p class="lede" data-reveal style="--d: 240ms">
+        Ægentes is a web studio that does one thing with unreasonable care:
+        websites for people whose name is over the door. We keep the client list
+        short and the standards high, and we answer our own email.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ the name ============ -->
+  <section class="band on-pine name-band">
+    <div class="wrap name-grid">
+      <div class="name-mark" data-reveal aria-hidden="true">
+        <span class="ae-big">Æ</span>
+      </div>
+      <div class="name-copy">
+        <p class="plaque plaque--brass" data-reveal>Why “Ægentes”</p>
+        <h2 class="display" data-reveal style="--d: 100ms">The ones <em>who do.</em></h2>
+        <p data-reveal style="--d: 200ms">
+          The name comes from the Latin <em class="latin">agentes</em> — the doers,
+          the ones who act. It's what we admire in our clients: people who open early,
+          fix the thing, bake the bread, make the call. And it's the promise we make
+          as a studio — less talking about the work, more work.
+        </p>
+        <p data-reveal style="--d: 280ms">
+          And if the word makes you think of <em class="latin">agents</em> — hold that
+          thought. The web is about to get a lot better at doing things for small
+          businesses, and we intend to bring our clients along first.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ house rules ============ -->
+  <section class="band">
+    <div class="wrap">
+      <header class="sect-head">
+        <p class="plaque plaque--brass" data-reveal>Posted by the till</p>
+        <h2 class="display" data-reveal style="--d: 100ms">House rules.</h2>
+      </header>
+
+      <ol class="rules">
+        {rules.map((r, i) => (
+          <li class="rule" data-reveal style={`--d: ${(i % 2) * 100}ms`}>
+            <span class="rule-n mono" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div class="rule-body">
+              <h3 class="display rule-line">{r.rule}</h3>
+              <p class="rule-note">{r.note}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ how we work, short ============ -->
+  <section class="band band--tight ways-band">
+    <div class="wrap ways-grid">
+      <div class="way" data-reveal>
+        <p class="tag way-h">Small by design</p>
+        <p>A deliberately small studio: the person you brief is the person who designs and builds. Nothing is handed down a chain.</p>
+      </div>
+      <div class="way" data-reveal style="--d: 100ms">
+        <p class="tag way-h">Built to hand over</p>
+        <p>Every site ships with an hour of training and notes you can actually follow. Independence is part of the deliverable.</p>
+      </div>
+      <div class="way" data-reveal style="--d: 200ms">
+        <p class="tag way-h">Around after launch</p>
+        <p>Most clients stay for the small stuff — seasonal updates, new photos, a page for the new service. We like it that way.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .studio-head { padding-top: clamp(8rem, 16vh, 11rem); padding-bottom: clamp(3.5rem, 7vw, 6rem); }
+  .studio-head .wrap { display: grid; gap: 1.8rem; justify-items: start; }
+  .head-line em { color: var(--brass); }
+
+  /* name band */
+  .name-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: center;
+  }
+  .name-mark {
+    display: grid;
+    place-items: center;
+    border: 2px solid var(--hair-brass);
+    border-radius: var(--frame-r);
+    background: color-mix(in srgb, var(--bottle) 45%, transparent);
+    aspect-ratio: 1;
+    max-width: 24rem;
+  }
+  .ae-big {
+    font-family: var(--f-display);
+    font-style: italic;
+    font-weight: 560;
+    font-variation-settings: 'wght' 560;
+    font-size: clamp(8rem, 18vw, 15rem);
+    line-height: 1;
+    color: var(--brass-2);
+    transform: translateY(-0.04em);
+  }
+  .name-copy { display: grid; gap: 1.3rem; justify-items: start; max-width: 40em; }
+  .name-copy p { text-wrap: pretty; }
+  .latin { font-family: var(--f-display); }
+
+  /* rules */
+  .rules {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(2rem, 4vw, 3.5rem) clamp(2.5rem, 5vw, 5rem);
+  }
+  .rule {
+    display: grid;
+    grid-template-columns: 3.4rem 1fr;
+    gap: 1.1rem;
+    align-items: start;
+    border-top: 2px solid var(--ink);
+    padding-top: 1.4rem;
+  }
+  .rule-n { color: var(--brass); font-size: 1.05rem; padding-top: 0.4rem; }
+  .rule-body { display: grid; gap: 0.55rem; }
+  .rule-line { margin: 0; font-size: clamp(1.25rem, 1.05rem + 1vw, 1.7rem); }
+  .rule-note { opacity: 0.82; font-size: 0.98rem; max-width: 34em; }
+
+  /* ways */
+  .ways-band { background: color-mix(in srgb, var(--brass) 10%, var(--plaster)); }
+  .ways-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(2rem, 4vw, 4rem);
+  }
+  .way { display: grid; gap: 0.8rem; align-content: start; }
+  .way-h { color: var(--brass); }
+  .way p:not(.way-h) { font-size: 0.98rem; opacity: 0.9; }
+
+  @media (max-width: 860px) {
+    .name-grid { grid-template-columns: 1fr; }
+    .name-mark { max-width: 17rem; }
+    .rules { grid-template-columns: 1fr; }
+    .ways-grid { grid-template-columns: 1fr; }
+  }
+</style>

@@ -1,0 +1,89 @@
+---
+/**
+ * The receipt — what every project includes, itemised like it matters.
+ */
+const items = [
+  ['Design, drawn for your trade', 'incl.'],
+  ['Build — fast, handmade code', 'incl.'],
+  ['Words that sound like you', 'incl.'],
+  ['Photography, art-directed', 'incl.'],
+  ['Domain, hosting & email setup', 'incl.'],
+  ['Owner training, plain English', 'incl.'],
+  ['Fit & finish, first 30 days', 'incl.'],
+];
+const now = new Date();
+const stamp = now.toISOString().slice(0, 10).replace(/-/g, '.');
+---
+
+<div class="receipt" role="figure" aria-label="What every project includes">
+  <div class="tear tear-top" aria-hidden="true"></div>
+  <div class="paper">
+    <p class="r-head">ÆGENTES — WEB STUDIO</p>
+    <p class="r-sub">ORDER Nº 001 · {stamp}</p>
+    <div class="r-rule" aria-hidden="true"></div>
+    <ul class="r-items">
+      {items.map(([name, price]) => (
+        <li><span class="r-name">{name}</span><span class="r-dots" aria-hidden="true"></span><span class="r-price">{price}</span></li>
+      ))}
+    </ul>
+    <div class="r-rule" aria-hidden="true"></div>
+    <p class="r-total"><span>TOTAL</span><span>One proper website</span></p>
+    <p class="r-fine">No templates. No retainers you don't need.<br />No charge for asking questions.</p>
+    <div class="r-barcode" aria-hidden="true"></div>
+    <p class="r-thanks">— THANK YOU FOR YOUR BUSINESS —</p>
+  </div>
+  <div class="tear tear-bottom" aria-hidden="true"></div>
+</div>
+
+<style>
+  .receipt {
+    width: min(100%, 25rem);
+    filter: drop-shadow(0 24px 30px rgba(15, 37, 29, 0.28));
+    transform: rotate(-1.4deg);
+  }
+  .paper {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 1.9rem 1.7rem 1.5rem;
+    font-family: var(--f-mono);
+  }
+  .tear {
+    height: 12px;
+    background: var(--paper);
+  }
+  .tear-top {
+    clip-path: polygon(0 100%, 100% 100%, 100% 55%, 97.5% 100%, 95% 40%, 92.5% 90%, 90% 30%, 87.5% 85%, 85% 45%, 82.5% 95%, 80% 35%, 77.5% 80%, 75% 30%, 72.5% 90%, 70% 45%, 67.5% 85%, 65% 30%, 62.5% 95%, 60% 40%, 57.5% 85%, 55% 30%, 52.5% 90%, 50% 45%, 47.5% 80%, 45% 30%, 42.5% 95%, 40% 40%, 37.5% 85%, 35% 30%, 32.5% 90%, 30% 45%, 27.5% 80%, 25% 35%, 22.5% 95%, 20% 30%, 17.5% 85%, 15% 45%, 12.5% 90%, 10% 30%, 7.5% 80%, 5% 40%, 2.5% 100%, 0 50%);
+  }
+  .tear-bottom {
+    clip-path: polygon(0 0, 100% 0, 100% 45%, 97.5% 0, 95% 60%, 92.5% 10%, 90% 70%, 87.5% 15%, 85% 55%, 82.5% 5%, 80% 65%, 77.5% 20%, 75% 70%, 72.5% 10%, 70% 55%, 67.5% 15%, 65% 70%, 62.5% 5%, 60% 60%, 57.5% 15%, 55% 70%, 52.5% 10%, 50% 55%, 47.5% 20%, 45% 70%, 42.5% 5%, 40% 60%, 37.5% 15%, 35% 70%, 32.5% 10%, 30% 55%, 27.5% 20%, 25% 65%, 22.5% 5%, 20% 70%, 17.5% 15%, 15% 55%, 12.5% 10%, 10% 70%, 7.5% 20%, 5% 60%, 2.5% 0, 0 50%);
+  }
+
+  .r-head { font-weight: 700; font-size: 0.92rem; letter-spacing: 0.18em; text-align: center; }
+  .r-sub { font-size: 0.72rem; letter-spacing: 0.14em; text-align: center; opacity: 0.65; margin-top: 0.35rem; }
+  .r-rule { border-top: 1.5px dashed color-mix(in srgb, var(--ink) 40%, transparent); margin: 1.1rem 0; }
+
+  .r-items { list-style: none; padding: 0; display: grid; gap: 0.62rem; }
+  .r-items li { display: flex; align-items: baseline; gap: 0.55em; font-size: 0.85rem; }
+  .r-name { flex: none; max-width: 75%; }
+  .r-dots { flex: 1; border-bottom: 2px dotted color-mix(in srgb, var(--ink) 38%, transparent); transform: translateY(-3px); }
+  .r-price { flex: none; text-transform: uppercase; letter-spacing: 0.08em; color: var(--brass); font-weight: 650; }
+
+  .r-total {
+    display: flex; justify-content: space-between; gap: 1em;
+    font-weight: 700; font-size: 0.95rem; letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .r-fine { font-size: 0.74rem; line-height: 1.65; opacity: 0.68; margin-top: 0.9rem; }
+
+  .r-barcode {
+    height: 40px;
+    margin: 1.3rem auto 0.5rem;
+    width: 82%;
+    background: repeating-linear-gradient(90deg,
+      var(--ink) 0 2px, transparent 2px 5px,
+      var(--ink) 5px 9px, transparent 9px 11px,
+      var(--ink) 11px 12px, transparent 12px 16px,
+      var(--ink) 16px 18px, transparent 18px 23px);
+  }
+  .r-thanks { font-size: 0.7rem; letter-spacing: 0.22em; text-align: center; opacity: 0.7; }
+</style>

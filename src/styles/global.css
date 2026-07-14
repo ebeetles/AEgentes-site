@@ -1,0 +1,307 @@
+/* ==========================================================================
+   ÆGENTES — design system
+   World: shopcraft. Trade signs, awnings, gold-leaf window lettering,
+   receipts and ledgers — executed with modern typographic discipline.
+   Faces: Besley (Clarendon revival — the shop-sign slab), Work Sans (body),
+   Spline Sans Mono (tickets, labels, ledger data).
+   ========================================================================== */
+
+/* ---- tokens ------------------------------------------------------------ */
+:root {
+  /* palette */
+  --pine:    #1c3a2e;   /* awning green — hero & footer ground            */
+  --pine-2:  #24473a;   /* raised surfaces on pine                        */
+  --bottle:  #0f251d;   /* deepest green — flap tiles, shadows            */
+  --ink:     #142419;   /* green-cast near-black — text on light          */
+  --plaster: #eff0e2;   /* shopfront plaster — light ground               */
+  --paper:   #f8f7eb;   /* receipt / card paper                           */
+  --brass:   #b68c35;   /* gold leaf — rules & small lettering on light   */
+  --brass-2: #d8b25c;   /* brighter brass — lettering on pine             */
+  --signal:  #e04a22;   /* OPEN-sign red — tiny functional marks only     */
+
+  --line-ink:   color-mix(in srgb, var(--ink) 88%, transparent);
+  --hair-ink:   color-mix(in srgb, var(--ink) 22%, transparent);
+  --hair-brass: color-mix(in srgb, var(--brass-2) 34%, transparent);
+  --hair-plas:  color-mix(in srgb, var(--plaster) 22%, transparent);
+
+  /* type */
+  --f-display: 'Besley Variable', 'Besley', Georgia, serif;
+  --f-body: 'Work Sans Variable', 'Work Sans', 'Helvetica Neue', sans-serif;
+  --f-mono: 'Spline Sans Mono Variable', 'Spline Sans Mono', 'SF Mono', monospace;
+
+  --t-hero: clamp(2.6rem, 1.1rem + 6.4vw, 5.9rem);
+  --t-h2:   clamp(2.05rem, 1.1rem + 3.4vw, 4rem);
+  --t-h3:   clamp(1.4rem, 1.05rem + 1.4vw, 2.1rem);
+  --t-lede: clamp(1.08rem, 1rem + 0.45vw, 1.32rem);
+  --t-body: 1.0625rem;
+  --t-tick: 0.78rem;   /* mono ticket text  */
+  --t-tag:  0.72rem;   /* mono micro labels */
+
+  /* rhythm */
+  --gutter: clamp(1.25rem, 4vw, 4.5rem);
+  --band: clamp(5rem, 10vw, 9.5rem);       /* vertical section rhythm */
+  --frame-r: 12px;                          /* shop-window frames      */
+  --plaque-r: 4px;
+
+  --ease-out: cubic-bezier(0.2, 0.65, 0.15, 1);
+  --ease-flip: cubic-bezier(0.42, 0, 0.36, 1);
+
+  --shadow-lift: 0 1.5px 0 var(--ink), 0 18px 40px -18px color-mix(in srgb, var(--ink) 45%, transparent);
+}
+
+/* ---- reset ------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { scroll-behavior: smooth; }
+html:focus-within { scroll-behavior: smooth; }
+body {
+  font-family: var(--f-body);
+  font-size: var(--t-body);
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--plaster);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-variant-ligatures: common-ligatures;
+  overflow-x: clip;
+}
+img, svg, video { display: block; max-width: 100%; }
+button, input, textarea { font: inherit; color: inherit; }
+a { color: inherit; text-decoration-thickness: 1.5px; text-underline-offset: 0.2em; }
+::selection { background: var(--brass-2); color: var(--bottle); }
+
+:focus-visible {
+  outline: 2.5px solid var(--signal);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* faint print grain over everything (no blend mode — cheap to composite) */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- type roles --------------------------------------------------------- */
+.display {
+  font-family: var(--f-display);
+  font-weight: 620;
+  font-variation-settings: 'wght' 620;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+.display em {
+  font-style: italic;
+  font-weight: 480;
+  font-variation-settings: 'wght' 480;
+  letter-spacing: -0.005em;
+}
+h1.display { font-size: var(--t-hero); }
+h2.display { font-size: var(--t-h2); }
+h3.display { font-size: var(--t-h3); line-height: 1.12; }
+
+.lede {
+  font-size: var(--t-lede);
+  line-height: 1.55;
+  max-width: 34em;
+  text-wrap: pretty;
+}
+
+.mono, .tag {
+  font-family: var(--f-mono);
+  font-weight: 500;
+  font-variation-settings: 'wght' 500;
+}
+.tag {
+  font-size: var(--t-tag);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* ---- live status dot — cheap to animate (transform/opacity only) ------- */
+.livedot {
+  position: relative;
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--signal);
+  flex: none;
+}
+.livedot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--signal);
+  animation: livedot 2.7s ease-out infinite;
+}
+@keyframes livedot {
+  0% { transform: scale(1); opacity: 0.55; }
+  70%, 100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* ---- plaques — small brass shop plates used as section labels ---------- */
+.plaque {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.42em 0.85em 0.38em;
+  border: 1.5px solid currentColor;
+  border-radius: var(--plaque-r);
+  font-family: var(--f-mono);
+  font-size: var(--t-tag);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.plaque .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--signal);
+  flex: none;
+}
+.plaque--brass { color: var(--brass); }
+.on-pine .plaque--brass, .plaque--brass.on-pine { color: var(--brass-2); }
+
+/* ---- buttons — painted signs ------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7em;
+  padding: 1.02em 1.7em 0.98em;
+  border: 2px solid var(--ink);
+  border-radius: 7px;
+  font-family: var(--f-mono);
+  font-size: 0.8rem;
+  font-weight: 650;
+  font-variation-settings: 'wght' 650;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-decoration: none;
+  line-height: 1;
+  cursor: pointer;
+  background: transparent;
+  color: var(--ink);
+  transition: background-color 0.22s var(--ease-out), color 0.22s var(--ease-out),
+              border-color 0.22s var(--ease-out), transform 0.22s var(--ease-out),
+              box-shadow 0.22s var(--ease-out);
+}
+.btn .arrow { transition: transform 0.25s var(--ease-out); }
+.btn:hover .arrow { transform: translateX(4px); }
+.btn:active { transform: translateY(1.5px); }
+
+.btn--solid { background: var(--ink); color: var(--plaster); }
+.btn--solid:hover { background: var(--signal); border-color: var(--signal); color: #fff8f2; }
+
+.btn--plaster { background: var(--plaster); color: var(--bottle); border-color: var(--plaster); }
+.btn--plaster:hover { background: var(--brass-2); border-color: var(--brass-2); color: var(--bottle); }
+
+.btn--ghost-pine { color: var(--plaster); border-color: var(--hair-plas); }
+.btn--ghost-pine:hover { border-color: var(--brass-2); color: var(--brass-2); }
+
+.btn--ghost-ink { color: var(--ink); border-color: var(--hair-ink); }
+.btn--ghost-ink:hover { border-color: var(--ink); background: var(--ink); color: var(--plaster); }
+
+/* ---- layout ------------------------------------------------------------- */
+.wrap { width: min(100% - 2 * var(--gutter), 82rem); margin-inline: auto; }
+.band { padding-block: var(--band); }
+.band--tight { padding-block: calc(var(--band) * 0.62); }
+
+.on-pine { background: var(--pine); color: var(--plaster); }
+.on-pine ::selection { background: var(--brass-2); color: var(--bottle); }
+
+/* section headers: plaque + big line, consistent grammar everywhere */
+.sect-head { display: grid; gap: 1.4rem; justify-items: start; margin-bottom: clamp(2.5rem, 5vw, 4.5rem); }
+.sect-head .display { max-width: 14em; }
+.sect-head--split > div { justify-items: start; }
+
+/* ---- reveal choreography ------------------------------------------------ */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.75s var(--ease-out), transform 0.75s var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+[data-reveal].is-in { opacity: 1; transform: none; }
+
+/* masked line reveals for display headlines */
+.lines .l { display: block; overflow: clip; padding-block: 0.06em; margin-block: -0.06em; }
+.lines .li {
+  display: inline-block;
+  transform: translateY(118%) rotate(0.6deg);
+  transition: transform 0.9s var(--ease-out);
+  transition-delay: var(--d, 0ms);
+}
+.lines.is-in .li { transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  [data-reveal], .lines .li {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+}
+
+/* ---- prose (case studies & studio) -------------------------------------- */
+.prose { max-width: 40em; }
+.prose p { margin-block: 1.1em; text-wrap: pretty; }
+.prose h2 {
+  font-family: var(--f-display);
+  font-size: var(--t-h3);
+  font-weight: 640;
+  font-variation-settings: 'wght' 640;
+  line-height: 1.15;
+  margin: 2.2em 0 0.55em;
+}
+.prose h2::before {
+  content: '';
+  display: block;
+  width: 2.6rem;
+  border-top: 3px solid var(--brass);
+  margin-bottom: 0.8rem;
+}
+.prose strong { font-weight: 640; }
+.prose blockquote {
+  margin: 1.6em 0;
+  padding: 0.2em 0 0.2em 1.4em;
+  border-left: 3px solid var(--brass);
+  font-family: var(--f-display);
+  font-style: italic;
+  font-size: 1.28em;
+  line-height: 1.4;
+}
+.prose ul { padding-left: 1.1em; }
+.prose li { margin-block: 0.4em; }
+.prose li::marker { color: var(--brass); }
+
+/* ---- misc --------------------------------------------------------------- */
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; border: 0;
+}
+.skip-link {
+  position: fixed; top: 0.6rem; left: 0.6rem; z-index: 200;
+  transform: translateY(-300%);
+  background: var(--bottle); color: var(--plaster);
+  padding: 0.7em 1em; border-radius: 6px;
+  font-family: var(--f-mono); font-size: 0.8rem;
+  transition: transform 0.2s;
+}
+.skip-link:focus-visible { transform: none; }
