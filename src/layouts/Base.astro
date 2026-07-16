@@ -25,6 +25,24 @@ const {
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogUrl = new URL(ogImage, Astro.site);
+
+// Organization schema — helps Google's Knowledge Graph and AI answer
+// engines (ChatGPT, Perplexity, AI Overviews) resolve "Ægentes" as a
+// real business rather than an ambiguous word.
+// Add real profile URLs to `sameAs` as they're created — each one is
+// also a corroborating signal for the entity.
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Ægentes',
+  url: 'https://www.aegentes.com/',
+  logo: new URL('/favicon.svg', Astro.site).toString(),
+  image: ogUrl.toString(),
+  description: 'Ægentes is a web studio that designs and builds websites for shops, trades and independents — proper, fast, and unmistakably yours.',
+  email: 'hello@aegentes.com',
+  areaServed: 'US',
+  sameAs: [],
+};
 ---
 
 <!doctype html>
@@ -47,6 +65,8 @@ const ogUrl = new URL(ogImage, Astro.site);
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogUrl} />
     <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
 
     <ClientRouter />
   </head>

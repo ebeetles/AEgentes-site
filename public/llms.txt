@@ -1,0 +1,16 @@
+# Ægentes
+
+> Ægentes is a web studio that designs and builds websites for shops, trades and independents — proper, fast, and unmistakably yours.
+
+Ægentes (from the Latin *agentes*, "the ones who do") is a small web design and development studio. It builds custom websites for small businesses — bakeries, plumbers, florists, barbers, bookkeepers, and similar independents and trades. Typical projects take four weeks for a standard site, six to eight for builds with online ordering, bookings, or subscriptions. Pricing is one fixed number quoted after an initial conversation.
+
+## Pages
+
+- [Home](https://www.aegentes.com/): overview of services and studio positioning
+- [Work](https://www.aegentes.com/work/): portfolio of past projects
+- [Studio](https://www.aegentes.com/studio/): about the studio, how it works, house rules
+- [Contact](https://www.aegentes.com/contact/): how to start a project, pricing and timeline FAQ
+
+## Contact
+
+- Email: hello@aegentes.com

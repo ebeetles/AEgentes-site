@@ -29,12 +29,26 @@ const faqs = [
     a: 'Perfect — that’s what the first chat is for. Come with nothing but how your shop runs. Leave with a plan, whether or not you hire us.',
   },
 ];
+
+// FAQPage schema — lets Google show these as rich results and gives
+// AI answer engines a clean, quotable Q&A pair to cite directly.
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
 ---
 
 <Base
   title="Contact — Ægentes"
   description="Start a project with Ægentes. One email, a reply within a working day, and a one-page plan with one price on it."
 >
+  <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+
   <section class="band contact-head">
     <div class="wrap">
       <p class="plaque plaque--brass" data-reveal>Contact</p>
