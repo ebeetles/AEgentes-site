@@ -7,12 +7,12 @@ const year = new Date().getFullYear();
     <div class="foot-cta">
       <p class="tag foot-kicker">Say hello</p>
       <h2 class="display foot-line">Let's put your <em>name</em> up.</h2>
-      <a class="foot-mail" href="mailto:hello@aegentes.com">hello@aegentes.com</a>
+      <a class="foot-mail" href="mailto:alan@aegentes.com">alan@aegentes.com</a>
+      <a class="foot-phone tag" href="tel:+16506684007">Or call — (650) 668-4007</a>
     </div>
 
     <div class="foot-grid">
       <div class="open-sign" aria-label="Studio status: open, taking on new projects">
-        <span class="livedot" aria-hidden="true"></span>
         <span class="open-word">OPEN</span>
         <span class="open-note tag">Taking on<br />new projects</span>
       </div>
@@ -27,7 +27,7 @@ const year = new Date().getFullYear();
       <div class="foot-hours">
         <p class="tag foot-h">Shop hours</p>
         <p class="hours-line">Your time: <span class="mono" data-clock>—:—</span></p>
-        <p class="hours-note">Write any hour. We reply within one working day, usually sooner.</p>
+        <p class="hours-note">Write any hour — we reply within one working day, usually sooner. Call any hour — our AI receptionist always picks up.</p>
       </div>
     </div>
 
@@ -58,6 +58,12 @@ const year = new Date().getFullYear();
     transition: color 0.25s var(--ease-out);
   }
   .foot-mail:hover { color: var(--brass-2); }
+  .foot-phone {
+    color: var(--brass-2);
+    text-decoration-color: color-mix(in srgb, var(--brass-2) 55%, transparent);
+    text-underline-offset: 0.2em;
+  }
+  .foot-phone:hover { text-decoration-color: var(--brass-2); }
 
   .foot-grid {
     display: grid;

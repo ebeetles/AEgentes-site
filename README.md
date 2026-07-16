@@ -1,7 +1,7 @@
 # Ægentes — aegentes.com
 
-The studio site: a shopcraft-themed portfolio and pitch for a web studio that builds
-websites for small businesses. Built with [Astro](https://astro.build) — fully static,
+The studio site: a shopcraft-themed portfolio and pitch for a studio that builds
+websites and AI receptionists for small businesses. Built with [Astro](https://astro.build) — fully static,
 no client framework, ~15 kB of JavaScript total (the split-flap sign, scroll reveals,
 menu, clock).
 
@@ -81,7 +81,8 @@ Notes:
 
 | What | Where |
 | --- | --- |
-| Email address | Search `hello@aegentes.com` — it appears in `Nav.astro`, `Footer.astro`, `index.astro`, `contact.astro` |
+| Email address | Search `alan@aegentes.com` — it appears in `Nav.astro`, `Footer.astro`, `index.astro`, `contact.astro`, `Base.astro` (schema) |
+| Phone number | Search `6506684007` / `(650) 668-4007` — `Nav.astro`, `Footer.astro`, `contact.astro`, `Base.astro` (schema), `public/llms.txt` |
 | Trades on the split-flap sign | `trades` array in `src/pages/index.astro` (keep words ≤ 9 letters) |
 | Receipt line items | `items` in `src/components/Receipt.astro` |
 | Process steps | `steps` in `src/pages/index.astro` |
@@ -91,16 +92,20 @@ Notes:
 | Colours & type scale | CSS variables at the top of `src/styles/global.css` |
 | Social/OG image | `node scripts/og.mjs` regenerates `public/og.png` |
 
-## When the AI-automation services launch
+## Services
 
-The site is structured so this is an addition, not a redesign:
+Two offerings sit alongside each other across the site:
 
-- Add the service to the **receipt** (`Receipt.astro`) and the **flap board** words.
-- Add a `services` entry pattern to project frontmatter as usual — case studies for
-  automation clients work in the same collection (a `kind: "automation"` field can be
-  added to the schema in `src/content.config.ts` for filtering later).
-- The studio page's name story ("agentes — the ones who do… hold that thought")
-  already plants the narrative.
+- **Websites** — the original offering. Detailed by the **receipt** (`Receipt.astro`),
+  the four-step **process** (`index.astro`), and the **portfolio** (`src/content/work/`).
+- **AI receptionist** — launched July 2026. Presented in the homepage **"What we do"**
+  section (`.do-grid` in `index.astro`), the studio page name story, the contact page
+  phone block + FAQ, and `public/llms.txt`. The phone number `(650) 668-4007` is
+  answered by Ægentes's own AI receptionist.
+
+To add AI-receptionist case studies, drop them into the same `src/content/work/`
+collection as usual (a `kind` field can be added to `src/content.config.ts` for
+filtering later).
 
 ## Deploying to aegentes.com
 

@@ -124,29 +124,6 @@ h3.display { font-size: var(--t-h3); line-height: 1.12; }
   text-transform: uppercase;
 }
 
-/* ---- live status dot — cheap to animate (transform/opacity only) ------- */
-.livedot {
-  position: relative;
-  display: inline-block;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--signal);
-  flex: none;
-}
-.livedot::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: var(--signal);
-  animation: livedot 2.7s ease-out infinite;
-}
-@keyframes livedot {
-  0% { transform: scale(1); opacity: 0.55; }
-  70%, 100% { transform: scale(2.6); opacity: 0; }
-}
-
 /* ---- plaques — small brass shop plates used as section labels ---------- */
 .plaque {
   display: inline-flex;
@@ -162,12 +139,6 @@ h3.display { font-size: var(--t-h3); line-height: 1.12; }
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
-}
-.plaque .dot {
-  width: 7px; height: 7px;
-  border-radius: 50%;
-  background: var(--signal);
-  flex: none;
 }
 .plaque--brass { color: var(--brass); }
 .on-pine .plaque--brass, .plaque--brass.on-pine { color: var(--brass-2); }
@@ -235,7 +206,7 @@ h3.display { font-size: var(--t-h3); line-height: 1.12; }
 [data-reveal].is-in { opacity: 1; transform: none; }
 
 /* masked line reveals for display headlines */
-.lines .l { display: block; overflow: clip; padding-block: 0.06em; margin-block: -0.06em; }
+.lines .l { display: block; overflow: clip; padding-block: 0.2em; margin-block: -0.2em; }
 .lines .li {
   display: inline-block;
   transform: translateY(118%) rotate(0.6deg);

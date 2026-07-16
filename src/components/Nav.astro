@@ -34,14 +34,15 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
 
   <div class="menu" id="shopmenu" data-menu hidden>
     <div class="menu-inner wrap">
-      <p class="menu-kicker tag">Ægentes — web studio</p>
+      <p class="menu-kicker tag">Ægentes — websites &amp; AI reception</p>
       <nav class="menu-links" aria-label="Menu">
         <a href="/">Home</a>
         {links.map((l) => <a href={l.href}>{l.label}</a>)}
       </nav>
       <div class="menu-foot">
-        <a class="menu-mail" href="mailto:hello@aegentes.com">hello@aegentes.com</a>
-        <p class="tag menu-open"><span class="livedot" aria-hidden="true"></span> Open — taking on new projects</p>
+        <a class="menu-mail" href="mailto:alan@aegentes.com">alan@aegentes.com</a>
+        <a class="menu-tel" href="tel:+16506684007">(650) 668-4007</a>
+        <p class="tag menu-open">Open — taking on new projects</p>
       </div>
     </div>
   </div>
@@ -182,7 +183,13 @@ const isActive = (href: string) => path === href || (href !== '/' && path.starts
     font-size: 1.05rem;
     text-decoration-color: var(--brass-2);
   }
-  .menu-open .livedot { margin-right: 0.35em; }
+  .menu-tel {
+    font-family: var(--f-mono);
+    font-size: 1.05rem;
+    text-decoration-color: var(--brass-2);
+    width: fit-content;
+  }
+  .menu-tel:hover { color: var(--brass-2); }
 
   @media (max-width: 820px) {
     .nav-links { display: none; }

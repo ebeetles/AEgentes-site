@@ -1,16 +1,22 @@
 # Ægentes
 
-> Ægentes is a web studio that designs and builds websites for shops, trades and independents — proper, fast, and unmistakably yours.
+> Ægentes builds websites and AI receptionists for shops, trades and independents — a shopfront that looks like your trade, and a voice that answers the phone when you can't.
 
-Ægentes (from the Latin *agentes*, "the ones who do") is a small web design and development studio. It builds custom websites for small businesses — bakeries, plumbers, florists, barbers, bookkeepers, and similar independents and trades. Typical projects take four weeks for a standard site, six to eight for builds with online ordering, bookings, or subscriptions. Pricing is one fixed number quoted after an initial conversation.
+Ægentes (from the Latin *agentes*, "the ones who do") is a small studio serving small businesses — bakeries, plumbers, florists, barbers, bookkeepers, and similar independents and trades. It offers two services:
+
+1. **Websites** — custom, handmade websites drawn from the business itself. Typical projects take a few days for a standard site, a week or two for builds with online ordering, bookings, or subscriptions.
+2. **AI receptionist** — an AI voice agent that answers the business's phone day or night, on the first ring: it handles common questions, books appointments, and texts the owner the details, speaking in the shop's own voice rather than a call centre's.
+
+Either service can be bought on its own or together. Pricing is one fixed number quoted after an initial conversation.
 
 ## Pages
 
-- [Home](https://www.aegentes.com/): overview of services and studio positioning
+- [Home](https://www.aegentes.com/): overview of services (websites and AI receptionist) and studio positioning
 - [Work](https://www.aegentes.com/work/): portfolio of past projects
 - [Studio](https://www.aegentes.com/studio/): about the studio, how it works, house rules
 - [Contact](https://www.aegentes.com/contact/): how to start a project, pricing and timeline FAQ
 
 ## Contact
 
-- Email: hello@aegentes.com
+- Email: alan@aegentes.com
+- Phone: (650) 668-4007 (answered by Ægentes's own AI receptionist, day or night)

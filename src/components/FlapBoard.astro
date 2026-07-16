@@ -23,7 +23,7 @@ const first = upper[0].padEnd(cols, ' ');
   role="text"
   aria-label={`${label}: ${words.join(', ')}`}
 >
-  <span class="board-label tag"><span class="livedot" aria-hidden="true"></span>{label}</span>
+  <span class="board-label tag">{label}</span>
   <span class="cells" aria-hidden="true">
     {first.split('').map((ch) => (
       <span class="cell" data-ch={ch}>

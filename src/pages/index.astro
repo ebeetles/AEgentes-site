@@ -17,34 +17,34 @@ const trades = [
 
 const steps = [
   {
-    n: 'I', name: 'The chat', when: 'Week 1',
+    n: 'I', name: 'The chat', when: 'Day 1',
     copy: 'Thirty minutes, no jargon, no slide deck. We learn how your shop actually runs, what you sell most, and what a good month looks like.',
   },
   {
-    n: 'II', name: 'The blueprint', when: 'Week 1',
+    n: 'II', name: 'The blueprint', when: 'Day 1',
     copy: 'One page that pins the whole plan down — sitemap, words, look, price. You approve it before we build a thing.',
   },
   {
-    n: 'III', name: 'The build', when: 'Weeks 2–3',
+    n: 'III', name: 'The build', when: 'Days 2–3',
     copy: 'Design and code, growing at a link you can open on your phone whenever you like. Two proper rounds of changes included.',
   },
   {
-    n: 'IV', name: 'The keys', when: 'Week 4',
+    n: 'IV', name: 'The keys', when: 'Day 4',
     copy: 'We launch, point your domain, sort your email, and teach you to run it all in an hour. Then it’s yours — files, accounts, everything.',
   },
 ];
 ---
 
 <Base
-  title="Ægentes — websites for small businesses"
-  description="Ægentes is a web studio that designs and builds websites for shops, trades and independents — proper, fast, and unmistakably yours."
+  title="Ægentes — websites & AI receptionists for small business"
+  description="Ægentes builds the whole shopfront for small business: a website that looks like your trade, and an AI receptionist that answers the phone when you can't."
   theme="pine"
 >
   <!-- ============ hero ============ -->
   <section class="hero on-pine">
     <div class="wrap hero-grid">
       <div class="hero-in">
-        <p class="plaque plaque--brass" data-reveal>Ægentes · Web studio · Est. 2026</p>
+        <p class="plaque plaque--brass" data-reveal>Ægentes · Websites & AI reception · Est. 2026</p>
 
         <h1 class="display lines hero-h1">
           <span class="l"><span class="li" style="--d: 90ms">We put small business</span></span>
@@ -56,8 +56,9 @@ const steps = [
         </div>
 
         <p class="lede hero-lede" data-reveal style="--d: 500ms">
-          We design and build websites for shops, trades and independents — with the same
-          care you put into your own work. Proper, fast, and unmistakably yours.
+          We build the whole shopfront for shops, trades and independents — a website that
+          looks like your work, and an AI receptionist that answers the phone when you can't.
+          Proper, fast, and unmistakably yours.
         </p>
 
         <div class="hero-ctas" data-reveal style="--d: 600ms">
@@ -65,25 +66,44 @@ const steps = [
           <a class="btn btn--ghost-pine" href="/work/">See the work</a>
         </div>
       </div>
-
-      <aside class="hero-glass" data-reveal style="--d: 700ms" aria-hidden="true">
-        <p class="glass-line">— Design &amp; build —</p>
-        <p class="glass-line glass-sub">words · photos · care</p>
-        <div class="glass-seal">
-          <svg viewBox="0 0 200 200">
-            <circle cx="100" cy="100" r="96" fill="none" stroke="currentColor" stroke-width="2"/>
-            <circle cx="100" cy="100" r="84" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="2 6"/>
-            <text x="100" y="104" text-anchor="middle" dominant-baseline="central" font-size="94">Æ</text>
-          </svg>
-        </div>
-        <p class="glass-line glass-sub">est. mmxxvi</p>
-        <p class="glass-line">Open Mon–Fri · by appointment</p>
-      </aside>
     </div>
 
     <div class="wrap hero-foot" data-reveal style="--d: 750ms">
       <p class="hero-latin"><em>Ægentes</em> — from the Latin <em>agentes</em>: the ones who do.</p>
-      <p class="tag hero-open"><span class="livedot" aria-hidden="true"></span>Open — booking new projects</p>
+      <p class="tag hero-open">Open — booking new projects</p>
+    </div>
+  </section>
+
+  <!-- ============ what we do ============ -->
+  <section class="band do-band">
+    <div class="wrap">
+      <header class="sect-head">
+        <p class="plaque plaque--brass" data-reveal>What we do</p>
+        <h2 class="display" data-reveal style="--d: 100ms">Two ways to <em>show up.</em></h2>
+      </header>
+
+      <div class="do-grid">
+        <article class="do-card" data-reveal>
+          <p class="tag do-tag">01 · Websites</p>
+          <h3 class="display do-line">A shopfront that looks like your trade.</h3>
+          <p class="do-copy">
+            Designed and built by hand, drawn from the business itself — its colours, its
+            counter, its customers. Proper, fast, and unmistakably yours. Done in days, not weeks.
+          </p>
+          <a class="do-link tag" href="/work/">See the work <span class="arrow">→</span></a>
+        </article>
+
+        <article class="do-card do-card--brass" data-reveal style="--d: 120ms">
+          <p class="tag do-tag">02 · AI receptionist <span class="do-new">New</span></p>
+          <h3 class="display do-line">A voice that answers every call.</h3>
+          <p class="do-copy">
+            Miss a call, miss a job. Ours picks up on the first ring — day or night — answers
+            the regulars, books the appointment, and texts you the details. It sounds like your
+            shop, not a call centre.
+          </p>
+          <a class="do-link tag" href="/contact/">Hear it answer <span class="arrow">→</span></a>
+        </article>
+      </div>
     </div>
   </section>
 
@@ -121,10 +141,10 @@ const steps = [
         <h2 class="display" data-reveal style="--d: 100ms">Everything on <em>the ticket.</em></h2>
         <p class="lede" data-reveal style="--d: 200ms">
           One flat scope, agreed up front, itemised like it matters. No mystery line
-          items, no "that'll be extra" three weeks in. If it's on the receipt, it ships.
+          items, no "that'll be extra" halfway through. If it's on the receipt, it ships.
         </p>
         <p class="ticket-note" data-reveal style="--d: 300ms">
-          Most projects run four weeks, door to door. If yours needs more — bookings,
+          Most projects are done in a few days, door to door. If yours needs more — bookings,
           ordering, a shop — we'll say so on day one, with a number attached.
         </p>
       </div>
@@ -139,7 +159,7 @@ const steps = [
     <div class="wrap">
       <header class="sect-head">
         <p class="plaque plaque--brass" data-reveal>How it goes</p>
-        <h2 class="display" data-reveal style="--d: 100ms">Four weeks, <em>four steps.</em></h2>
+        <h2 class="display" data-reveal style="--d: 100ms">A few days, <em>four steps.</em></h2>
       </header>
 
       <ol class="steps">
@@ -157,7 +177,7 @@ const steps = [
 
       <p class="steps-after" data-reveal>
         And then we stick around — small tweaks, seasonal updates, and a real
-        person on the other end of <a href="mailto:hello@aegentes.com">hello@aegentes.com</a>.
+        person on the other end of <a href="mailto:alan@aegentes.com">alan@aegentes.com</a>.
       </p>
     </div>
   </section>
@@ -194,47 +214,15 @@ const steps = [
   }
   .hero-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: clamp(2rem, 5vw, 6rem);
+    grid-template-columns: minmax(0, 1fr);
     align-items: center;
   }
-  .hero-in { display: grid; gap: 1.55rem; justify-items: start; }
+  .hero-in { display: grid; gap: 1.55rem; justify-items: start; max-width: 52rem; }
   .hero-h1 { max-width: 11em; }
   .hero-h1 em { color: var(--brass-2); }
   .hero-flap { margin-block: 0.35rem; }
-  .hero-lede { opacity: 0.92; }
+  .hero-lede { opacity: 0.92; max-width: 40em; }
   .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 0.3rem; }
-
-  /* gold lettering on the window glass */
-  .hero-glass {
-    display: grid;
-    justify-items: center;
-    gap: 1.1rem;
-    color: var(--brass-2);
-    opacity: 0.85;
-    padding-right: clamp(0rem, 2vw, 2.5rem);
-  }
-  .glass-line {
-    font-family: var(--f-mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  .glass-sub { opacity: 0.75; letter-spacing: 0.22em; }
-  .glass-seal { width: clamp(9rem, 14vw, 13rem); }
-  .glass-seal svg { width: 100%; height: auto; }
-  .glass-seal text {
-    font-family: var(--f-display);
-    font-style: italic;
-    font-weight: 560;
-    fill: currentColor;
-  }
-  .glass-seal circle { opacity: 0.8; }
-  @media (max-width: 1080px) {
-    .hero-grid { grid-template-columns: 1fr; }
-    .hero-glass { display: none; }
-  }
 
   .hero-foot {
     display: flex;
@@ -249,6 +237,58 @@ const steps = [
   .hero-latin { font-size: 0.92rem; opacity: 0.8; }
   .hero-latin em { font-family: var(--f-display); }
   .hero-open { color: var(--brass-2); display: inline-flex; align-items: center; gap: 0.6em; }
+
+  /* ---- what we do ---- */
+  .do-band .sect-head { margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
+  .do-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1.5rem, 3.5vw, 3rem);
+  }
+  .do-card {
+    display: grid;
+    gap: 1rem;
+    align-content: start;
+    padding: clamp(1.8rem, 3vw, 2.6rem);
+    border: 2px solid var(--ink);
+    border-radius: var(--frame-r);
+    background: var(--plaster);
+  }
+  .do-card--brass {
+    border-color: var(--pine);
+    background: color-mix(in srgb, var(--brass) 12%, var(--plaster));
+  }
+  .do-tag {
+    color: var(--brass);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+  }
+  .do-new {
+    font-family: var(--f-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--plaster);
+    background: var(--pine);
+    padding: 0.25em 0.6em;
+    border-radius: 999px;
+  }
+  .do-line { margin: 0; font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2rem); max-width: 14em; }
+  .do-copy { opacity: 0.88; max-width: 34em; }
+  .do-link {
+    justify-self: start;
+    margin-top: 0.4rem;
+    text-decoration: none;
+    border-bottom: 2px solid var(--brass);
+    padding-bottom: 0.4em;
+  }
+  .do-link .arrow { display: inline-block; transition: transform 0.25s var(--ease-out); }
+  .do-link:hover .arrow { transform: translateX(4px); }
+
+  @media (max-width: 760px) {
+    .do-grid { grid-template-columns: 1fr; }
+  }
 
   /* ---- shared section header split ---- */
   .sect-head--split {

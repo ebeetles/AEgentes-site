@@ -3,18 +3,26 @@ import Base from '../layouts/Base.astro';
 
 const expectations = [
   { when: 'Within a day', what: 'A reply from a person, not an autoresponder. Usually much sooner.' },
-  { when: 'Within a week', what: 'A 30-minute chat about your shop — phone or video, your pick. No slideware.' },
+  { when: 'Within days', what: 'A 30-minute chat about your shop — phone or video, your pick. No slideware.' },
   { when: 'After the chat', what: 'A one-page plan with one price on it. Take it, sleep on it, or take it elsewhere — it’s yours.' },
 ];
 
 const faqs = [
   {
     q: 'What does a website cost?',
-    a: 'One fixed number, quoted after the first chat and itemised on the plan — design, build, words, training, the lot. If you need bookings, ordering or a shop, the number says so up front. No surprises three weeks in.',
+    a: 'One fixed number, quoted after the first chat and itemised on the plan — design, build, words, training, the lot. If you need bookings, ordering or a shop, the number says so up front. No surprises halfway through.',
   },
   {
     q: 'How long does it take?',
-    a: 'Four weeks door-to-door for most shops and trades. Bigger builds — online ordering, subscriptions — usually run six to eight. You’ll see it growing at a private link the whole way.',
+    a: 'A few days for most shops and trades — we move quick and we don’t pad the calendar. Bigger builds — online ordering, subscriptions — a week or two. You’ll see it growing at a private link the whole way.',
+  },
+  {
+    q: 'What is the AI receptionist?',
+    a: 'A voice that answers your phone when you can\'t — first ring, day or night. It knows your hours, prices and regulars, answers the usual questions, books the appointment, and texts you the details. It speaks in your shop\'s voice, not a call centre\'s. Want to hear it? Call us on (650) 668-4007 — that\'s our own.',
+  },
+  {
+    q: 'Can I get just a website, or just the receptionist?',
+    a: 'Either, or both. Plenty of shops start with the website and add the receptionist once calls pick up; others just need the phone answered. We\'ll quote whichever you want, one fixed number, no bundle you don\'t need.',
   },
   {
     q: 'Can you rescue my current site?',
@@ -45,7 +53,7 @@ const faqSchema = {
 
 <Base
   title="Contact — Ægentes"
-  description="Start a project with Ægentes. One email, a reply within a working day, and a one-page plan with one price on it."
+  description="Start a project with Ægentes. Email or call — our own AI receptionist answers day or night — and get a one-page plan with one price on it."
 >
   <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
@@ -59,12 +67,18 @@ const faqSchema = {
         Tell us what you make, fix, bake or book — a couple of lines is plenty.
         We'll take it from there.
       </p>
-      <a class="big-mail" href="mailto:hello@aegentes.com" data-reveal style="--d: 300ms">
-        hello@aegentes.com
+      <a class="big-mail" href="mailto:alan@aegentes.com" data-reveal style="--d: 300ms">
+        alan@aegentes.com
       </a>
       <p class="tag mail-note" data-reveal style="--d: 380ms">
-        <span class="livedot" aria-hidden="true"></span>Open — replies within one working day
+        Open — replies within one working day
       </p>
+
+      <div class="phone-block" data-reveal style="--d: 460ms">
+        <p class="tag phone-label">Or ring the shop</p>
+        <a class="big-tel" href="tel:+16506684007">(650)&nbsp;668&#8209;4007</a>
+        <p class="phone-note">Go on — our own AI receptionist picks up, day or night. It's the same one we build for clients.</p>
+      </div>
     </div>
   </section>
 
@@ -126,6 +140,32 @@ const faqSchema = {
   }
   .big-mail:hover { color: var(--brass); }
   .mail-note { color: var(--brass); display: inline-flex; align-items: center; gap: 0.6em; }
+
+  .phone-block {
+    display: grid;
+    gap: 0.7rem;
+    justify-items: start;
+    margin-top: 2.4rem;
+    padding-top: 2.2rem;
+    border-top: 1.5px solid var(--hair-ink);
+    width: 100%;
+    max-width: 44rem;
+  }
+  .phone-label { color: var(--brass); }
+  .big-tel {
+    font-family: var(--f-display);
+    font-style: italic;
+    font-weight: 500;
+    font-variation-settings: 'wght' 500;
+    font-size: clamp(1.7rem, 1rem + 3.6vw, 3.6rem);
+    line-height: 1.2;
+    text-decoration-thickness: 3px;
+    text-decoration-color: var(--brass);
+    text-underline-offset: 0.16em;
+    transition: color 0.25s var(--ease-out);
+  }
+  .big-tel:hover { color: var(--brass); }
+  .phone-note { max-width: 34em; opacity: 0.82; }
 
   .expect { list-style: none; padding: 0; display: grid; }
   .expect-row {
