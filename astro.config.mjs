@@ -3,7 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://aegentes.com',
+  site: 'https://www.aegentes.com',
   integrations: [sitemap()],
   devToolbar: { enabled: false },
 });
