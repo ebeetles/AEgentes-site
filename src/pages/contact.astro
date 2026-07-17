@@ -1,5 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import spotPhone from '../assets/spot-phone.png';
+import spotBell from '../assets/spot-bell.png';
 
 const expectations = [
   { when: 'Within a day', what: 'A reply from a person, not an autoresponder. Usually much sooner.' },
@@ -75,14 +78,17 @@ const faqSchema = {
       </p>
 
       <div class="phone-block" data-reveal style="--d: 460ms">
-        <p class="tag phone-label">Or ring the shop</p>
-        <a class="big-tel" href="tel:+16506684007">(650)&nbsp;668&#8209;4007</a>
-        <p class="phone-note">Go on — our own AI receptionist picks up, day or night. It's the same one we build for clients.</p>
+        <div class="phone-copy">
+          <p class="tag phone-label">Or ring the shop</p>
+          <a class="big-tel" href="tel:+16506684007">(650)&nbsp;668&#8209;4007</a>
+          <p class="phone-note">Go on — our own AI receptionist picks up, day or night. It's the same one we build for clients.</p>
+        </div>
+        <Image class="phone-etch" src={spotPhone} widths={[320, 640]} sizes="9.5rem" format="webp" alt="" loading="lazy" />
       </div>
     </div>
   </section>
 
-  <section class="band band--tight on-pine">
+  <section class="band band--tight on-pine scalloped">
     <div class="wrap">
       <header class="sect-head">
         <p class="plaque plaque--brass" data-reveal>What happens next</p>
@@ -101,6 +107,7 @@ const faqSchema = {
 
   <section class="band">
     <div class="wrap faq-wrap">
+      <Image class="faq-bell" src={spotBell} widths={[320, 640]} sizes="6.5rem" format="webp" alt="" loading="lazy" />
       <header class="sect-head">
         <p class="plaque plaque--brass" data-reveal>Asked across the counter</p>
         <h2 class="display" data-reveal style="--d: 100ms">Fair questions.</h2>
@@ -143,13 +150,21 @@ const faqSchema = {
 
   .phone-block {
     display: grid;
-    gap: 0.7rem;
-    justify-items: start;
+    grid-template-columns: 1fr auto;
+    gap: 1rem 2.5rem;
+    align-items: center;
     margin-top: 2.4rem;
     padding-top: 2.2rem;
     border-top: 1.5px solid var(--hair-ink);
     width: 100%;
     max-width: 44rem;
+  }
+  .phone-copy { display: grid; gap: 0.7rem; justify-items: start; }
+  .phone-etch {
+    width: clamp(6.5rem, 11vw, 9.5rem);
+    height: auto;
+    opacity: 0.95;
+    transform: rotate(-2deg);
   }
   .phone-label { color: var(--brass); }
   .big-tel {
@@ -180,6 +195,15 @@ const faqSchema = {
   .expect-when { color: var(--brass-2); }
   .expect-what { max-width: 40em; opacity: 0.92; }
 
+  .faq-wrap { position: relative; }
+  .faq-bell {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: clamp(5rem, 8vw, 6.5rem);
+    height: auto;
+    opacity: 0.95;
+  }
   .faqs { display: grid; border-top: 2px solid var(--ink); max-width: 52rem; }
   .faq { border-bottom: 2px solid var(--ink); }
   .faq summary {
@@ -212,5 +236,10 @@ const faqSchema = {
 
   @media (max-width: 640px) {
     .expect-row { grid-template-columns: 1fr; gap: 0.4rem; }
+    .phone-block { grid-template-columns: 1fr; }
+    .phone-etch { width: 6rem; justify-self: start; }
+  }
+  @media (max-width: 760px) {
+    .faq-bell { display: none; }
   }
 </style>

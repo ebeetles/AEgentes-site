@@ -1,9 +1,15 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
 import FlapBoard from '../components/FlapBoard.astro';
 import WorkCard from '../components/WorkCard.astro';
 import Receipt from '../components/Receipt.astro';
+import heroStreet from '../assets/hero-street.png';
+import heroLights from '../assets/hero-lights.png';
+import spotSign from '../assets/spot-sign.png';
+import spotPhone from '../assets/spot-phone.png';
+import vacantShop from '../assets/vacant-shop.png';
 
 const work = (await getCollection('work'))
   .sort((a, b) => a.data.order - b.data.order)
@@ -41,8 +47,48 @@ const steps = [
   theme="pine"
 >
   <!-- ============ hero ============ -->
-  <section class="hero on-pine">
-    <div class="wrap hero-grid">
+  <section class="hero on-pine" data-hero>
+    <!-- backdrop: etched street at dusk, lamplight, stage glow -->
+    <div class="hero-scene" aria-hidden="true">
+      <div class="hero-spot"></div>
+      <div class="hero-lights" data-hero-lights>
+        <div class="hero-lights-fig">
+          <Image
+            class="hero-lights-img"
+            src={heroLights}
+            widths={[880, 1400, 1750, 3168]}
+            sizes="min(100vw, 1750px)"
+            format="webp"
+            quality={82}
+            alt=""
+            loading="eager"
+          />
+          <span class="bulb" style="--bx: 55%; --by: 20.6%; --tw: 4.8s; --td: 0s"></span>
+          <span class="bulb" style="--bx: 64.3%; --by: 36%; --tw: 6.2s; --td: 1.4s"></span>
+          <span class="bulb" style="--bx: 74.5%; --by: 45.4%; --tw: 5.4s; --td: 0.7s"></span>
+          <span class="bulb" style="--bx: 89.5%; --by: 37.1%; --tw: 7.1s; --td: 2.1s"></span>
+        </div>
+      </div>
+      <div class="hero-street" data-hero-street>
+        <div class="hero-street-fig">
+          <div class="hero-lamplight"></div>
+          <Image
+            class="hero-street-img"
+            src={heroStreet}
+            widths={[880, 1400, 1750, 3168]}
+            sizes="(max-width: 760px) 200vw, min(100vw, 1750px)"
+            format="webp"
+            quality={82}
+            alt=""
+            loading="eager"
+            fetchpriority="high"
+          />
+        </div>
+      </div>
+      <div class="hero-scrim"></div>
+    </div>
+
+    <div class="wrap hero-grid" data-hero-copy>
       <div class="hero-in">
         <p class="plaque plaque--brass" data-reveal>Ægentes · Websites & AI reception · Est. 2026</p>
 
@@ -70,12 +116,13 @@ const steps = [
 
     <div class="wrap hero-foot" data-reveal style="--d: 750ms">
       <p class="hero-latin"><em>Ægentes</em> — from the Latin <em>agentes</em>: the ones who do.</p>
+      <a class="tag hero-cue" href="#what-we-do">Walk the street <span class="cue-arrow">↓</span></a>
       <p class="tag hero-open">Open — booking new projects</p>
     </div>
   </section>
 
   <!-- ============ what we do ============ -->
-  <section class="band do-band">
+  <section class="band do-band" id="what-we-do">
     <div class="wrap">
       <header class="sect-head">
         <p class="plaque plaque--brass" data-reveal>What we do</p>
@@ -84,6 +131,7 @@ const steps = [
 
       <div class="do-grid">
         <article class="do-card" data-reveal>
+          <Image class="do-etch" src={spotSign} widths={[320, 640]} sizes="6.5rem" format="webp" alt="" loading="lazy" />
           <p class="tag do-tag">01 · Websites</p>
           <h3 class="display do-line">A shopfront that looks like your trade.</h3>
           <p class="do-copy">
@@ -94,6 +142,7 @@ const steps = [
         </article>
 
         <article class="do-card do-card--brass" data-reveal style="--d: 120ms">
+          <Image class="do-etch" src={spotPhone} widths={[320, 640]} sizes="6.5rem" format="webp" alt="" loading="lazy" />
           <p class="tag do-tag">02 · AI receptionist <span class="do-new">New</span></p>
           <h3 class="display do-line">A voice that answers every call.</h3>
           <p class="do-copy">
@@ -125,6 +174,7 @@ const steps = [
           </div>
         ))}
         <a class="vacant" href="/contact/" data-reveal style="--d: 360ms">
+          <Image class="vacant-etch" src={vacantShop} widths={[480, 800]} sizes="24rem" format="webp" alt="" loading="lazy" />
           <span class="tag vacant-tag">Vacant · apply within</span>
           <span class="display vacant-line">Your name here.</span>
           <span class="tag vacant-cta">Start a project <span class="arrow">→</span></span>
@@ -155,7 +205,7 @@ const steps = [
   </section>
 
   <!-- ============ process ============ -->
-  <section class="band on-pine process-band">
+  <section class="band on-pine process-band scalloped" style="--scallop-above: color-mix(in srgb, var(--brass) 10%, var(--plaster))">
     <div class="wrap">
       <header class="sect-head">
         <p class="plaque plaque--brass" data-reveal>How it goes</p>
@@ -206,25 +256,179 @@ const steps = [
 <style>
   /* ---- hero ---- */
   .hero {
+    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-height: 100svh;
     padding-top: clamp(6rem, 12vh, 8.5rem);
+    overflow: clip;
   }
+
+  /* the etched street scene — all decorative, all behind the copy */
+  .hero-scene { position: absolute; inset: 0; pointer-events: none; }
+
+  /* stage light behind the headline — "up in lights" */
+  .hero-spot {
+    position: absolute;
+    top: 4%;
+    left: -14%;
+    width: min(58rem, 88vw);
+    aspect-ratio: 1;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--brass-2) 14%, transparent),
+      color-mix(in srgb, var(--brass-2) 5%, transparent) 48%,
+      transparent 72%
+    );
+    animation: spot-breathe 9s ease-in-out infinite alternate;
+  }
+  @keyframes spot-breathe {
+    from { transform: scale(1); opacity: 0.8; }
+    to   { transform: scale(1.07); opacity: 1; }
+  }
+
+  /* festoon lights strung across the sky — strongest upper-right,
+     ghosted where they pass behind the headline */
+  .hero-lights { position: absolute; inset: 0; will-change: transform; }
+  .hero-lights-fig {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    translate: -50% 0;
+    width: min(100%, 1750px);
+  }
+  .hero-lights-img {
+    width: 100%;
+    height: auto;
+    opacity: 0.5;
+    -webkit-mask-image:
+      linear-gradient(90deg, transparent 3%, #000 36%),
+      linear-gradient(180deg, #000 52%, transparent 94%);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(90deg, transparent 3%, #000 36%),
+      linear-gradient(180deg, #000 52%, transparent 94%);
+    mask-composite: intersect;
+  }
+  .bulb {
+    position: absolute;
+    left: var(--bx);
+    top: var(--by);
+    width: 4.5%;
+    aspect-ratio: 1;
+    translate: -50% -50%;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, #f4e0a4 32%, transparent),
+      color-mix(in srgb, var(--brass-2) 12%, transparent) 45%,
+      transparent 72%
+    );
+    animation: bulb-twinkle var(--tw, 5s) ease-in-out var(--td, 0s) infinite alternate;
+  }
+  @keyframes bulb-twinkle {
+    from { opacity: 0.35; transform: scale(0.92); }
+    to   { opacity: 1; transform: scale(1.06); }
+  }
+
+  .hero-street { position: absolute; inset: 0; will-change: transform; }
+  .hero-street-fig {
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    translate: -50% 0;
+    width: min(100%, 1750px);
+  }
+  .hero-street-img {
+    width: 100%;
+    height: auto;
+    /* the artwork's ground is near-identical to --pine; low opacity plus
+       faded edges make the remaining difference invisible (no blend mode —
+       mix-blend-mode + transforms flickers in some compositors) */
+    opacity: 0.78;
+    -webkit-mask-image:
+      linear-gradient(180deg, transparent 6%, #000 42%),
+      linear-gradient(90deg, transparent, #000 4% 96%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(180deg, transparent 6%, #000 42%),
+      linear-gradient(90deg, transparent, #000 4% 96%, transparent);
+    mask-composite: intersect;
+  }
+  /* the etched lamp actually glows at dusk */
+  .hero-lamplight {
+    position: absolute;
+    left: 61%;
+    bottom: 44%;
+    width: 30%;
+    aspect-ratio: 1;
+    translate: -50% 50%;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--brass-2) 26%, transparent),
+      color-mix(in srgb, var(--brass-2) 9%, transparent) 40%,
+      transparent 70%
+    );
+    animation: lamp-breathe 6.5s ease-in-out infinite alternate;
+  }
+  @keyframes lamp-breathe {
+    from { opacity: 0.65; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1.05); }
+  }
+
+  /* keeps copy legible where it overlaps the etching */
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg,
+        color-mix(in srgb, var(--pine) 68%, transparent) 0%,
+        color-mix(in srgb, var(--pine) 38%, transparent) 36%,
+        transparent 62%),
+      linear-gradient(180deg, transparent 74%,
+        color-mix(in srgb, var(--pine) 56%, transparent) 100%);
+  }
+
   .hero-grid {
+    position: relative;
+    z-index: 2;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     align-items: center;
+    will-change: transform, opacity;
   }
   .hero-in { display: grid; gap: 1.55rem; justify-items: start; max-width: 52rem; }
   .hero-h1 { max-width: 11em; }
   .hero-h1 em { color: var(--brass-2); }
+  /* gold-foil shimmer across "in lights." — decorative, degrades to brass */
+  @supports (-webkit-background-clip: text) or (background-clip: text) {
+    .hero-h1 em {
+      color: transparent;
+      background: linear-gradient(
+        105deg,
+        #a17a2c 0%,
+        var(--brass-2) 32%,
+        #f4e0a4 50%,
+        var(--brass-2) 68%,
+        #a17a2c 100%
+      );
+      background-size: 240% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      animation: foil-sweep 7s ease-in-out infinite;
+    }
+  }
+  @keyframes foil-sweep {
+    0%, 100% { background-position: 8% 0; }
+    50%      { background-position: 92% 0; }
+  }
   .hero-flap { margin-block: 0.35rem; }
   .hero-lede { opacity: 0.92; max-width: 40em; }
   .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 0.3rem; }
 
   .hero-foot {
+    position: relative;
+    z-index: 2;
     display: flex;
     flex-wrap: wrap;
     gap: 0.8rem 2.5rem;
@@ -238,6 +442,36 @@ const steps = [
   .hero-latin em { font-family: var(--f-display); }
   .hero-open { color: var(--brass-2); display: inline-flex; align-items: center; gap: 0.6em; }
 
+  .hero-cue {
+    color: var(--brass-2);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7em;
+    opacity: 0.85;
+    transition: opacity 0.25s var(--ease-out);
+  }
+  .hero-cue:hover { opacity: 1; }
+  .cue-arrow { display: inline-block; animation: cue-dip 2.6s var(--ease-out) infinite; }
+  @keyframes cue-dip {
+    0%, 100% { transform: translateY(-1px); }
+    55%      { transform: translateY(3px); }
+  }
+  @media (max-width: 900px) {
+    .hero-cue { display: none; }
+  }
+  @media (max-width: 760px) {
+    .hero-street-fig { width: 200%; }
+    .hero-street-img { opacity: 0.6; }
+    .hero-lights-fig { width: 150%; left: auto; right: -22%; translate: 0 0; }
+    .hero-lights-img { opacity: 0.38; }
+    .hero-scrim {
+      background:
+        linear-gradient(180deg, transparent 62%,
+          color-mix(in srgb, var(--pine) 62%, transparent) 100%);
+    }
+  }
+
   /* ---- what we do ---- */
   .do-band .sect-head { margin-bottom: clamp(2.5rem, 5vw, 3.5rem); }
   .do-grid {
@@ -246,6 +480,7 @@ const steps = [
     gap: clamp(1.5rem, 3.5vw, 3rem);
   }
   .do-card {
+    position: relative;
     display: grid;
     gap: 1rem;
     align-content: start;
@@ -253,6 +488,15 @@ const steps = [
     border: 2px solid var(--ink);
     border-radius: var(--frame-r);
     background: var(--plaster);
+  }
+  .do-etch {
+    position: absolute;
+    top: clamp(1.1rem, 2vw, 1.6rem);
+    right: clamp(1.1rem, 2vw, 1.6rem);
+    width: clamp(4.2rem, 7vw, 6.5rem);
+    height: auto;
+    opacity: 0.95;
+    pointer-events: none;
   }
   .do-card--brass {
     border-color: var(--pine);
@@ -274,7 +518,7 @@ const steps = [
     padding: 0.25em 0.6em;
     border-radius: 999px;
   }
-  .do-line { margin: 0; font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2rem); max-width: 14em; }
+  .do-line { margin: 0; font-size: clamp(1.4rem, 1.1rem + 1.4vw, 2rem); max-width: 14em; padding-right: clamp(2.5rem, 5vw, 4.5rem); }
   .do-copy { opacity: 0.88; max-width: 34em; }
   .do-link {
     justify-self: start;
@@ -314,6 +558,8 @@ const steps = [
   .work-grid > :nth-child(odd):not(:first-child) { margin-top: clamp(0rem, -2vw, -1.5rem); }
 
   .vacant {
+    position: relative;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -327,6 +573,20 @@ const steps = [
     padding: 2rem;
     transition: background-color 0.3s var(--ease-out), border-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
   }
+  .vacant > * { position: relative; z-index: 1; }
+  .vacant .vacant-etch {
+    position: absolute;
+    z-index: 0;
+    left: 50%;
+    bottom: -3%;
+    height: 94%;
+    width: auto;
+    translate: -50% 0;
+    opacity: 0.45;
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease-out);
+  }
+  .vacant:hover .vacant-etch { opacity: 0.05; }
   .vacant-tag { color: var(--brass); }
   .vacant-line { font-size: var(--t-h3); }
   .vacant-cta { border-bottom: 2px solid var(--brass); padding-bottom: 0.4em; }

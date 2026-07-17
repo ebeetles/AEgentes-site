@@ -1,8 +1,34 @@
 ---
+import { Image } from 'astro:assets';
+import streetNight from '../assets/street-night.png';
+
+interface Props {
+  /** colour of the band sitting directly above the footer (for the scallop edge) */
+  above?: string;
+}
+const { above = 'var(--plaster)' } = Astro.props;
 const year = new Date().getFullYear();
 ---
 
-<footer class="foot on-pine">
+<footer class="foot on-pine scalloped" style={`--scallop-above: ${above}`}>
+  <!-- the street at night — shutters down, lamp still lit -->
+  <div class="foot-scene" aria-hidden="true">
+    <div class="foot-street-fig">
+      <Image
+        class="foot-street-img"
+        src={streetNight}
+        widths={[880, 1400, 1600, 3168]}
+        sizes="min(100vw, 1600px)"
+        format="webp"
+        quality={82}
+        alt=""
+        loading="lazy"
+      />
+      <div class="foot-lamplight"></div>
+    </div>
+    <div class="foot-scrim"></div>
+  </div>
+
   <div class="wrap">
     <div class="foot-cta">
       <p class="tag foot-kicker">Say hello</p>
@@ -40,7 +66,61 @@ const year = new Date().getFullYear();
 </footer>
 
 <style>
-  .foot { padding-block: clamp(4rem, 8vw, 7rem) 2rem; }
+  .foot {
+    position: relative;
+    overflow: clip;
+    padding-block: clamp(4rem, 8vw, 7rem) 2rem;
+  }
+  .foot > .wrap { position: relative; z-index: 2; }
+
+  .foot-scene { position: absolute; inset: 0; pointer-events: none; }
+  .foot-street-fig {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    translate: -50% 0;
+    width: min(100%, 1600px);
+  }
+  .foot-street-img {
+    width: 100%;
+    height: auto;
+    opacity: 0.38;
+    -webkit-mask-image:
+      linear-gradient(180deg, transparent 3%, #000 30%),
+      linear-gradient(90deg, transparent, #000 4% 96%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-image:
+      linear-gradient(180deg, transparent 3%, #000 30%),
+      linear-gradient(90deg, transparent, #000 4% 96%, transparent);
+    mask-composite: intersect;
+  }
+  /* the one lamp still burning */
+  .foot-lamplight {
+    position: absolute;
+    left: 41.9%;
+    bottom: 58%;
+    width: 22%;
+    aspect-ratio: 1;
+    translate: -50% 50%;
+    background: radial-gradient(
+      closest-side,
+      color-mix(in srgb, var(--brass-2) 22%, transparent),
+      color-mix(in srgb, var(--brass-2) 8%, transparent) 42%,
+      transparent 70%
+    );
+    animation: foot-lamp-breathe 7s ease-in-out infinite alternate;
+  }
+  @keyframes foot-lamp-breathe {
+    from { opacity: 0.6; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1.04); }
+  }
+  .foot-scrim {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--pine) 34%, transparent), transparent 38%),
+      linear-gradient(0deg, color-mix(in srgb, var(--pine) 60%, transparent), transparent 26%);
+  }
 
   .foot-cta { display: grid; gap: 1.3rem; justify-items: start; }
   .foot-kicker { color: var(--brass-2); }

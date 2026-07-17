@@ -13,6 +13,8 @@ interface Props {
   description: string;
   /** colour of the content the fixed nav initially sits on */
   theme?: 'pine' | 'plaster';
+  /** colour of the last band before the footer (for its scallop edge) */
+  footerAbove?: string;
   ogImage?: string;
 }
 
@@ -20,6 +22,7 @@ const {
   title,
   description,
   theme = 'plaster',
+  footerAbove,
   ogImage = '/og.png',
 } = Astro.props;
 
@@ -77,7 +80,7 @@ const orgSchema = {
     <main id="main">
       <slot />
     </main>
-    <Footer />
+    <Footer above={footerAbove} />
     <script src="../scripts/main.ts"></script>
   </body>
 </html>

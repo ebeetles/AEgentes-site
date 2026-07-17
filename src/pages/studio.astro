@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
+import spotLaurel from '../assets/spot-laurel.png';
 
 const rules = [
   { rule: 'If your customers can’t use it, it isn’t done.', note: 'We test on cracked phones and slow connections, not just studio monitors.' },
@@ -14,9 +16,11 @@ const rules = [
 <Base
   title="Studio — Ægentes"
   description="Ægentes — from the Latin agentes, the ones who do. A small studio building websites and AI receptionists for small businesses: house rules, working style, and why the name."
+  footerAbove="color-mix(in srgb, var(--brass) 10%, var(--plaster))"
 >
   <section class="band studio-head">
-    <div class="wrap">
+    <div class="wrap studio-head-wrap">
+      <Image class="studio-laurel" src={spotLaurel} widths={[480, 800]} sizes="12rem" format="webp" alt="" loading="eager" />
       <p class="plaque plaque--brass" data-reveal>The studio</p>
       <h1 class="display lines head-line">
         <span class="l"><span class="li">A small shop</span></span>
@@ -32,7 +36,7 @@ const rules = [
   </section>
 
   <!-- ============ the name ============ -->
-  <section class="band on-pine name-band">
+  <section class="band on-pine name-band scalloped">
     <div class="wrap name-grid">
       <div class="name-mark" data-reveal aria-hidden="true">
         <span class="ae-big">Æ</span>
@@ -100,6 +104,20 @@ const rules = [
 <style>
   .studio-head { padding-top: clamp(8rem, 16vh, 11rem); padding-bottom: clamp(3.5rem, 7vw, 6rem); }
   .studio-head .wrap { display: grid; gap: 1.8rem; justify-items: start; }
+  .studio-head-wrap { position: relative; }
+  .studio-laurel {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    translate: 0 -50%;
+    width: clamp(9rem, 15vw, 12.5rem);
+    height: auto;
+    opacity: 0.9;
+    pointer-events: none;
+  }
+  @media (max-width: 900px) {
+    .studio-laurel { display: none; }
+  }
   .head-line em { color: var(--brass); }
 
   /* name band */

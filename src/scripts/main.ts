@@ -178,6 +178,63 @@ function initReveals() {
   onCleanup(() => io.disconnect());
 }
 
+/* ---- hero: street parallax + lamplight drift ----------------------------- */
+function initHero() {
+  const hero = document.querySelector<HTMLElement>('[data-hero]');
+  if (!hero || hero.dataset.heroInit) return;
+  hero.dataset.heroInit = '1';
+  if (reducedMotion()) return;
+
+  const street = hero.querySelector<HTMLElement>('[data-hero-street]');
+  const lights = hero.querySelector<HTMLElement>('[data-hero-lights]');
+  const copy = hero.querySelector<HTMLElement>('[data-hero-copy]');
+  if (!street && !lights && !copy) return;
+
+  const finePointer = window.matchMedia('(pointer: fine)').matches;
+  let driftTarget = 0; // pointer-led horizontal drift, px
+  let drift = 0;
+  let raf = 0;
+
+  // the street recedes slower than the page; the copy lifts away and dims
+  const apply = () => {
+    const y = window.scrollY;
+    const h = hero.offsetHeight || 1;
+    const p = Math.min(1, y / h);
+    if (street) street.style.transform = `translate3d(${drift.toFixed(2)}px, ${(y * 0.22).toFixed(1)}px, 0)`;
+    if (lights) lights.style.transform = `translate3d(${(drift * 0.45).toFixed(2)}px, ${(y * 0.1).toFixed(1)}px, 0)`;
+    if (copy) {
+      copy.style.transform = `translate3d(0, ${(y * -0.08).toFixed(1)}px, 0)`;
+      copy.style.opacity = (1 - p * 0.5).toFixed(3);
+    }
+  };
+
+  // scroll writes synchronously (scroll events are already frame-aligned);
+  // the rAF loop only runs while the pointer drift is settling
+  const frame = () => {
+    raf = 0;
+    drift += (driftTarget - drift) * 0.07;
+    apply();
+    if (Math.abs(driftTarget - drift) > 0.15) queue();
+  };
+  const queue = () => { if (!raf) raf = requestAnimationFrame(frame); };
+
+  const onScroll = () => apply();
+  const onPointer = (e: PointerEvent) => {
+    driftTarget = (e.clientX / window.innerWidth - 0.5) * -12;
+    queue();
+  };
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  if (finePointer) window.addEventListener('pointermove', onPointer, { passive: true });
+  apply();
+
+  onCleanup(() => {
+    window.removeEventListener('scroll', onScroll);
+    if (finePointer) window.removeEventListener('pointermove', onPointer);
+    if (raf) cancelAnimationFrame(raf);
+  });
+}
+
 /* ---- nav: solid state on scroll + menu ---------------------------------- */
 function initNav() {
   const nav = document.querySelector<HTMLElement>('[data-nav]');
@@ -229,6 +286,7 @@ function initClock() {
 function initAll() {
   initFlaps();
   initReveals();
+  initHero();
   initNav();
   initClock();
 }

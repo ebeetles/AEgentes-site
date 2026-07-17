@@ -1,7 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import Base from '../../layouts/Base.astro';
 import WorkCard from '../../components/WorkCard.astro';
+import vacantShop from '../../assets/vacant-shop.png';
 
 const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.order);
 ---
@@ -33,6 +35,7 @@ const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.
           </div>
         ))}
         <a class="vacant" href="/contact/" data-reveal>
+          <Image class="vacant-etch" src={vacantShop} widths={[480, 800]} sizes="24rem" format="webp" alt="" loading="lazy" />
           <span class="tag vacant-tag">Vacant · apply within</span>
           <span class="display vacant-line">Your name here.</span>
           <span class="tag vacant-cta">Start a project <span class="arrow">→</span></span>
@@ -55,6 +58,8 @@ const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.
   .work-grid > :nth-child(even) { margin-top: clamp(0rem, 5vw, 4.5rem); }
 
   .vacant {
+    position: relative;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -68,6 +73,20 @@ const work = (await getCollection('work')).sort((a, b) => a.data.order - b.data.
     padding: 2rem;
     transition: background-color 0.3s var(--ease-out), border-color 0.3s var(--ease-out), color 0.3s var(--ease-out);
   }
+  .vacant > * { position: relative; z-index: 1; }
+  .vacant .vacant-etch {
+    position: absolute;
+    z-index: 0;
+    left: 50%;
+    bottom: -3%;
+    height: 94%;
+    width: auto;
+    translate: -50% 0;
+    opacity: 0.45;
+    pointer-events: none;
+    transition: opacity 0.3s var(--ease-out);
+  }
+  .vacant:hover .vacant-etch { opacity: 0.05; }
   .vacant-tag { color: var(--brass); }
   .vacant-line { font-size: var(--t-h3); }
   .vacant-cta { border-bottom: 2px solid var(--brass); padding-bottom: 0.4em; }
